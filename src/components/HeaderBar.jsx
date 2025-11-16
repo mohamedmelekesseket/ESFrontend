@@ -389,14 +389,14 @@ function HeaderBar({showBag,setShowBag}   ) {
       <AnimatePresence>
         {showBag && (
           <motion.div
+            className='overflow-2'
             onClick={() => {
               setShowBagEdit(false);
               setEditingCartItem(null);
               setOriginalSize('');
               setOriginalColor('');
-              setTimeout(() => {setShowBag(false);}, 400);
+              setShowBag(false); // CLOSE IMMEDIATELY
             }}
-            className='overflow-2'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -404,6 +404,7 @@ function HeaderBar({showBag,setShowBag}   ) {
           />
         )}
       </AnimatePresence>
+
       {showSearch && showMenu && (
         <div className='overflow'>
         </div>
@@ -633,7 +634,7 @@ function HeaderBar({showBag,setShowBag}   ) {
                 )}
               </div>
               <Search className='SearchX' onClick={()=>(setShowSearch(!showSearch))} style={{color:"white",cursor:"pointer"}}/>
-              <ShoppingBag onClick={()=>(setShowMenu(false),setShowUser(false),setShowBag(!showBag))} style={{cursor:"pointer",color:"white"}}/>
+              <ShoppingBag onClick={()=>(setShowMenu(false),setShowUser(false),setShowBag(!showBag))} style={{cursor:"pointer",color:"red"}}/>
               {
                 productCart.cart?.products?.length === 0 ?(
                   ''
@@ -805,7 +806,7 @@ function HeaderBar({showBag,setShowBag}   ) {
           {productCart.cart?.products?.length === 0 || !user ?(          
             <div>
               <X className='XMobileBag' onClick={()=>setShowBag(false)} style={{display: showBag ?"":"none",cursor:"pointer", marginLeft:"90%"}}/>
-              <ArrowLeft className='IconMobileShoppingCard'  onClick={()=>setShowBag(false)} style={{display: showBag ?"":"none",cursor:"pointer", marginLeft:"2%"}}/>
+              <ArrowLeft className='IconMobileShoppingCard'  onClick={()=>setShowBag(false)} style={{display: showBag ?"initial":"none",cursor:"pointer", marginLeft:"2%"}}/>
               <h3 style={{textAlign:"center",position:"relative",top:"-10px",display: showBag ?"":"none"}}>ShoppingBag</h3>
               
               {/* Empty Cart Message */}

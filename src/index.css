@@ -796,6 +796,10 @@ h3 {
   display: none;
 }
 @media (max-width: 768px) {
+  .IconMobileShoppingCard{
+    display: block;
+    color: black;
+  }
   .HeaderBar {
     flex-direction: column;
     height: auto;
@@ -871,6 +875,12 @@ h3 {
     position: fixed;
     bottom: 0px;
   }
+  .ShoppingBag-Edit.open {
+    width: 100%; /* adjust as you like: 80–100% */
+  }
+  .ShoppingBag.open {
+    width: 100%; /* adjust as you like: 80–100% */
+  }
   .PdSb-1 {
     overflow-y: scroll;
     width: 100%;
@@ -904,12 +914,7 @@ h3 {
     bottom: 35px;
     border-radius: 50%;
   }
-  .ShoppingBag-Edit.open {
-    width: 100%; /* adjust as you like: 80–100% */
-  }
-  .ShoppingBag.open {
-    width: 100%; /* adjust as you like: 80–100% */
-  }
+
   .XMobileBag {
     display: none;
   }
@@ -1122,6 +1127,9 @@ h3 {
     width: 50%;
     height: 400px;
     background-color: #000;
+  }
+  .overflow-2 {
+    display: none !important;
   }
 }
 
