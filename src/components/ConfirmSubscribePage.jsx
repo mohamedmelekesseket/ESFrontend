@@ -7,7 +7,7 @@ export default function ConfirmSubscribePage() {
   const [status, setStatus] = useState("Confirming...");
 
   useEffect(() => {
-    axios.get(`http://192.168.1.17:2025/confirm-subscribe/${token}`)
+    axios.get(`https://192.168.1.17:2025/confirm-subscribe/${token}`)
       .then(res => setStatus(res.data.message))
       .catch(err => setStatus(err.response?.data?.message || "Something went wrong"));
   }, [token]);

@@ -95,7 +95,7 @@ function HeaderBar({showBag,setShowBag}   ) {
   
   const getProducts = async () => {
     try {
-      const res = await axios.get("http://142.93.171.166/api/GetProduct");
+      const res = await axios.get("https://142.93.171.166/api/GetProduct");
       setAllProducts(res.data)
        const featuredProducts = res.data
         .filter(p => p.isFeatured)
@@ -110,7 +110,7 @@ function HeaderBar({showBag,setShowBag}   ) {
   };
   const getCategory = async () => {  
     try {
-      const res = await axios.get("http://142.93.171.166/api/Admin/Get-category",{
+      const res = await axios.get("https://142.93.171.166/api/Admin/Get-category",{
       });
       setCategories(res.data);            
     } catch (error) {
@@ -128,7 +128,7 @@ function HeaderBar({showBag,setShowBag}   ) {
   const getProductCart = async () => {  
     if (!user?.id) return;
     try {
-      const res = await axios.get(`http://142.93.171.166/api/GetProductCart/${user.id}`, {
+      const res = await axios.get(`https://142.93.171.166/api/GetProductCart/${user.id}`, {
         headers: {
           'Authorization': `Bearer ${user.token}`,
           'Content-Type': 'application/json'
@@ -142,7 +142,7 @@ function HeaderBar({showBag,setShowBag}   ) {
   };
   const getAllSubCategory = async (id) => {  
     try {
-      const res = await axios.get(`http://142.93.171.166/api/getAllSubCategory`);
+      const res = await axios.get(`https://142.93.171.166/api/getAllSubCategory`);
       setAllSubcategories(res.data);     
        
     } catch (error) {
@@ -154,7 +154,7 @@ function HeaderBar({showBag,setShowBag}   ) {
   };
   const getSubCategory = async (id) => {  
     try {
-      const res = await axios.get(`http://142.93.171.166/api/Admin/Get-Subcategory/${id}`);
+      const res = await axios.get(`https://142.93.171.166/api/Admin/Get-Subcategory/${id}`);
       setSubcategories(res.data);     
        
     } catch (error) {
@@ -176,7 +176,7 @@ function HeaderBar({showBag,setShowBag}   ) {
   const GetPById = async (id) => {  
     
     try {
-      const res = await axios.get(`http://142.93.171.166/api/Admin/Get-product/${id}`);     
+      const res = await axios.get(`https://142.93.171.166/api/Admin/Get-product/${id}`);     
       setName(res.data.name)
       setProduct(res.data)  
       // console.log('Product data:', res.data);
@@ -210,9 +210,9 @@ function HeaderBar({showBag,setShowBag}   ) {
     if (!imagePath) return '';
     // Normalize the path to use forward slashes
     let normalizedPath = imagePath.replace(/\\/g, '/');
-    return normalizedPath.startsWith('http')
+    return normalizedPath.startsWith('https')
       ? normalizedPath
-      : `http://142.93.171.166/${normalizedPath.replace(/^\//, '')}`;
+      : `https://142.93.171.166/${normalizedPath.replace(/^\//, '')}`;
   };
 
   const getImageByColor = (product, color, index = 0) => {
@@ -320,7 +320,7 @@ function HeaderBar({showBag,setShowBag}   ) {
   const DeletePrdCart = async (productToDelete) => {
     if (!user?.id) return;
     try {
-      const res = await axios.delete('http://142.93.171.166/api/DeletePrdCart', {
+      const res = await axios.delete('https://142.93.171.166/api/DeletePrdCart', {
         data: {
           userId: user.id,
           productId: productToDelete.productId._id,
@@ -343,7 +343,7 @@ function HeaderBar({showBag,setShowBag}   ) {
   const updateCartItem = async () => {
     if (!user?.id || !editingCartItem) return;
     try {
-      const res = await axios.put('http://142.93.171.166/api/cart-update', {
+      const res = await axios.put('https://142.93.171.166/api/cart-update', {
           userId: user.id,
           cartItemId: editingCartItem._id, // Send the cart item ID for reliable lookup
           productId: product._id,
@@ -487,7 +487,7 @@ function HeaderBar({showBag,setShowBag}   ) {
                   subcategoryId: prod.subcategoryId,
                   genre: prod.genre,
                 }}),setSearchMobile(false))}>
-                  <img src={`http://142.93.171.166/${prod.images[0]?.urls[3]}`} alt="" />
+                  <img src={`https://142.93.171.166/${prod.images[0]?.urls[3]}`} alt="" />
                   <h2>{prod.name}</h2>
                   <h3>{prod.price} TND</h3>
 
@@ -604,7 +604,7 @@ function HeaderBar({showBag,setShowBag}   ) {
                     setShowSearch(false);
                   }}
                 >
-                  <img src={`http://142.93.171.166/${prod.images[0]?.urls[3]}`} alt="" />
+                  <img src={`https://142.93.171.166/${prod.images[0]?.urls[3]}`} alt="" />
                   <h2>{prod.name}</h2>
                   <h3>{prod.price} TND</h3>
                 </div>
@@ -826,7 +826,7 @@ function HeaderBar({showBag,setShowBag}   ) {
                 <div id='FeaturedProductCards' className='FeaturedProductCards'>
                   {Products.slice(0, 4).map((prod, index) => 
                   <div key={prod._id || index} id='FeaturedProductCard' className='FeaturedProductCard'>
-                    <img src={`http://142.93.171.166/${prod.images[0]?.urls[3]}`} alt="" />
+                    <img src={`https://142.93.171.166/${prod.images[0]?.urls[3]}`} alt="" />
                     <h2>{prod.name}</h2>
                     <h3>{prod.price} TND</h3>
 

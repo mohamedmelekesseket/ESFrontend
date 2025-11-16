@@ -4,6 +4,7 @@ import { useParams, useLocation, Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, ArrowLeft, ShoppingBag, Mail, Instagram, Heart } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from "framer-motion";
+import Loader from './Loader';
 
 const ProductSelect = ({ setShowBag }) => {
   const location = useLocation();
@@ -27,53 +28,73 @@ const ProductSelect = ({ setShowBag }) => {
   const [touchEnd, setTouchEnd] = useState(null);
   const user = JSON.parse(localStorage.getItem('user'));
   const [isFavorite, setIsFavorite] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
 
   const getSafeImageUrl = (img) => {
     if (!img) return '/default.png';
-    if (typeof img === 'string') return `http://142.93.171.166/${img}`;
-    if (typeof img === 'object' && img.urls?.length) return `http://142.93.171.166/${img.urls[0]}`;
+    if (typeof img === 'string') return `https://142.93.171.166/${img}`;
+    if (typeof img === 'object' && img.urls?.length) return `https://142.93.171.166/${img.urls[0]}`;
     return '/default.png';
   };
 
-  const fetchProducts = async () => {
-    try {
-      const res = await axios.get('http://142.93.171.166/api/Admin/Get-products');
-      const filtered = res.data.filter(p => p.subcategoryId === subcategoryId && p.genre === genre);
-      setAllProducts(filtered);
-      setAlProducts(res.data);
-      const selectedProduct = filtered.find(p => p._id === id);
-      if (selectedProduct) {
-        setProduct(selectedProduct);
-        setName(selectedProduct.name || '');
-        setPrice(selectedProduct.price || '');
-        setDescription(selectedProduct.description || '');
-        setColors(Array.isArray(selectedProduct.color) ? selectedProduct.color : []);
-        setSizes(() => {
-          try {
-            const raw = Array.isArray(selectedProduct.size) ? selectedProduct.size[0] : selectedProduct.size;
-            return JSON.parse(raw);
-          } catch {
-            return [];
-          }
-        });
-        setImages(selectedProduct.images || []);
-        if (Array.isArray(selectedProduct.color) && selectedProduct.color.length > 0) {
-          setSelectedColor(selectedProduct.color[0]);
+const fetchProducts = async () => {
+  setLoading(true);
+
+  try {
+    const res = await axios.get('https://142.93.171.166/api/Admin/Get-products');
+
+    const filtered = res.data.filter(
+      p => p.subcategoryId === subcategoryId && p.genre === genre
+    );
+
+    setAllProducts(filtered);
+    setAlProducts(res.data);
+
+    const selectedProduct = filtered.find(p => p._id === id);
+
+    if (selectedProduct) {
+      setProduct(selectedProduct);
+      setName(selectedProduct.name || '');
+      setPrice(selectedProduct.price || '');
+      setDescription(selectedProduct.description || '');
+
+      // COLORS
+      setColors(Array.isArray(selectedProduct.color) ? selectedProduct.color : []);
+
+      // SIZES
+      setSizes(() => {
+        try {
+          const raw = Array.isArray(selectedProduct.size)
+            ? selectedProduct.size[0]
+            : selectedProduct.size;
+
+          return JSON.parse(raw);
+        } catch {
+          return [];
         }
-        if (Array.isArray(selectedProduct.images) && selectedProduct.images.length > 0) {
-          setImage(getSafeImageUrl(selectedProduct.images[0]));
-        }
-        setCurrentImageIndex(0);
+      });
+
+      // IMAGES
+      setImages(selectedProduct.images || []);
+      if (Array.isArray(selectedProduct.color) && selectedProduct.color.length > 0) {
+        setSelectedColor(selectedProduct.color[0]);
       }
-    } catch (error) {
-      if (error.response?.status !== 200) {
-        toast.error(error.response?.data?.message || "Failed to fetch products");
+
+      if (Array.isArray(selectedProduct.images) && selectedProduct.images.length > 0) {
+        setImage(getSafeImageUrl(selectedProduct.images[0]));
       }
-      console.error(error);
+
+      setCurrentImageIndex(0);
     }
-  };
+  } catch (err) {
+    console.error("Failed to fetch products", err);
+  } finally {
+    setTimeout(() => setLoading(false), 300); // smooth fade-out
+  }
+};
+
 
   useEffect(() => {
     if (subcategoryId && genre) {
@@ -85,16 +106,16 @@ const ProductSelect = ({ setShowBag }) => {
     if (!product?.images?.length) return '';
     const firstItem = product.images[0];
     if (typeof firstItem === 'string') {
-      return `http://142.93.171.166/${firstItem}`;
+      return `https://142.93.171.166/${firstItem}`;
     }
     if (typeof firstItem === 'object') {
       const match = product.images.find(img => img.color?.toLowerCase() === color?.toLowerCase());
       if (match?.urls?.[index]) {
-        return `http://142.93.171.166/${match.urls[index]}`;
+        return `https://142.93.171.166/${match.urls[index]}`;
       }
       const fallback = product.images.find(img => img.urls?.[index]);
       if (fallback) {
-        return `http://142.93.171.166/${fallback.urls[index]}`;
+        return `https://142.93.171.166/${fallback.urls[index]}`;
       }
     }
     return '';
@@ -105,7 +126,7 @@ const ProductSelect = ({ setShowBag }) => {
     const colorObj = images.find(img => img.color?.toLowerCase() === selectedColor?.toLowerCase());
     if (colorObj?.urls?.length > 0) {
       const idx = Math.max(0, Math.min(currentImageIndex, colorObj.urls.length - 1));
-      setImage(`http://142.93.171.166/${colorObj.urls[idx]}`);
+      setImage(`https://142.93.171.166/${colorObj.urls[idx]}`);
     } else {
       setImage(getSafeImageUrl(images[0]));
     }
@@ -165,7 +186,7 @@ const ProductSelect = ({ setShowBag }) => {
         products: [{ productId: id, quantity: 1, size: selectedSize, color: selectedColor }]
       };
 
-      const res = await axios.post('http://142.93.171.166/api/AddToCart', cartData, {
+      const res = await axios.post('https://142.93.171.166/api/AddToCart', cartData, {
         headers: {
           'Authorization': `Bearer ${user.token}`,
           'Content-Type': 'application/json'
@@ -226,6 +247,7 @@ const ProductSelect = ({ setShowBag }) => {
 
   return (
     <div className="ProductSelect">
+      <Loader isLoading={loading} />
       {product && (
         <div style={{ display: 'flex', justifyContent: "center", alignItems: "flex-end", width: "100%", gap: "48px" }}>
           <div className="gallery">
@@ -454,7 +476,7 @@ const ProductSelect = ({ setShowBag }) => {
                   genre: prod.genre,
                 }
               }), scrollToTop())}>
-              <img src={`http://142.93.171.166/${prod.images[0]?.urls[3]}`} alt="" />
+              <img src={`https://142.93.171.166/${prod.images[0]?.urls[3]}`} alt="" />
               <h2>{prod.name}</h2>
               <h3>{prod.price} TND</h3>
             </div>

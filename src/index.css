@@ -8240,3 +8240,27 @@ footer {
     gap: 10px;
   }
 }
+
+
+
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+}
+
+.loader-spinner {
+  width: 55px;
+  height: 55px;
+  border: 4px solid #7c2232;
+  border-top-color: transparent;
+  border-radius: 50%;
+}

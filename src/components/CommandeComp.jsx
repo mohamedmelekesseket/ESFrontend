@@ -69,9 +69,9 @@ const handleSelect = (prov) => {
 const getSafeImageUrl = (imagePath) => {
   if (!imagePath) return '';
   let normalizedPath = imagePath.replace(/\\/g, '/');
-  return normalizedPath.startsWith('http')
+  return normalizedPath.startsWith('https')
     ? normalizedPath
-    : `http://142.93.171.166/${normalizedPath.replace(/^\//, '')}`;
+    : `https://142.93.171.166/${normalizedPath.replace(/^\//, '')}`;
 };
 const getImageByColor = (product, color, index = 0) => {
   if (!product?.images?.length) {
@@ -103,7 +103,7 @@ const handleGoToProduct = (item) => {
 const DeletePrdCart = async (productToDelete) => {
   if (!user?.id) return;
   try {
-    const res = await axios.delete('http://142.93.171.166/api/DeletePrdCart', {
+    const res = await axios.delete('https://142.93.171.166/api/DeletePrdCart', {
       data: {
         userId: user.id,
         productId: productToDelete.productId._id,
@@ -132,7 +132,7 @@ const confirmDeleteItem = async () => {
 const getProductCart = async () => {  
   if (!user?.id) return;
   try {
-    const res = await axios.get(`http://142.93.171.166/api/GetProductCart/${user.id}`, {
+    const res = await axios.get(`https://142.93.171.166/api/GetProductCart/${user.id}`, {
       headers: {
         'Authorization': `Bearer ${user.token}`,
         'Content-Type': 'application/json'
@@ -151,7 +151,7 @@ const handleOrder = async () => {
   
   try {
     const res = await axios.post(
-      `http://142.93.171.166/api/create-order/${user.id}`,
+      `https://142.93.171.166/api/create-order/${user.id}`,
       {
         nom,
         prenom,

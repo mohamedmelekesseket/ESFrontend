@@ -44,7 +44,7 @@ const CategroiesBord = () => {
       formadata.append('images',image)
     })
     try {
-      const res= await axios.post('http://142.93.171.166/api/Admin/Add-category',
+      const res= await axios.post('https://142.93.171.166/api/Admin/Add-category',
         formadata,
         {
           headers: {
@@ -84,7 +84,7 @@ const CategroiesBord = () => {
       })
       }
     try {
-      const res= await axios.post('http://142.93.171.166/api/Admin/Add-CategorySub',
+      const res= await axios.post('https://142.93.171.166/api/Admin/Add-CategorySub',
         formadata,
         {
           headers: {
@@ -111,7 +111,7 @@ const CategroiesBord = () => {
   }
     const getCategory = async () => {  
     try {
-      const res = await axios.get("http://142.93.171.166/api/Admin/Get-category",{
+      const res = await axios.get("https://142.93.171.166/api/Admin/Get-category",{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -128,7 +128,7 @@ const CategroiesBord = () => {
   };
     const getSubCategory = async (id) => {  
     try {
-      const res = await axios.get(`http://142.93.171.166/api/Admin/Get-Subcategory/${id}`,{
+      const res = await axios.get(`https://142.93.171.166/api/Admin/Get-Subcategory/${id}`,{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -171,7 +171,7 @@ const CategroiesBord = () => {
   const confirmDelete = async (id, toastId) => {
     try {
       // TODO: Replace hardcoded API URL with environment variable for production
-      const res = await axios.delete(`http://142.93.171.166/api/Admin/Delete-SubCategory/${id}`,{
+      const res = await axios.delete(`https://142.93.171.166/api/Admin/Delete-SubCategory/${id}`,{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }

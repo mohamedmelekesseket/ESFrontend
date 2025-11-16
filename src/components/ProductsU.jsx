@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 import Slider from "@mui/material/Slider";
 import { SlidersHorizontal, Eraser, X, Mail, Instagram, Twitter, Youtube,Package } from 'lucide-react';
 import { motion, AnimatePresence } from "framer-motion";
+import Loader from './Loader';
 
 function valuetext(value) {
   return `${value}°C`;
@@ -32,12 +33,13 @@ const Index = () => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [value, setValue] = useState([0, 300]);
   const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [loading, setLoading] = useState(true);
 
   // Fetch all categories
   useEffect(() => {
     const getCategory = async () => {
       try {
-        const res = await axios.get('http://142.93.171.166/api/Admin/Get-category');
+        const res = await axios.get('https://142.93.171.166/api/Admin/Get-category');
         setCategories(res.data);
       } catch (error) {
         toast.error(error.response?.data?.message || "Error fetching categories");
@@ -51,7 +53,7 @@ const Index = () => {
     if (!parentCategoryId) return;
     const getSubCategory = async () => {
       try {
-        const res = await axios.get(`http://142.93.171.166/api/Admin/Get-Subcategory/${parentCategoryId}`);
+        const res = await axios.get(`https://142.93.171.166/api/Admin/Get-Subcategory/${parentCategoryId}`);
         setSubcategories(res.data);
       } catch (error) {
         toast.error(error.response?.data?.message || "Error fetching subcategories");
@@ -63,14 +65,22 @@ const Index = () => {
   // Fetch all products
   useEffect(() => {
     const getProducts = async () => {
+      
       try {
-        const res = await axios.get('http://142.93.171.166/api/Admin/Get-products');
+        const res = await axios.get('https://142.93.171.166/api/Admin/Get-products');
         setProducts(res.data);
       } catch (error) {
         toast.error("Failed to fetch products");
       }
     };
     getProducts();
+  }, []);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 4000); // 4000ms = 4 seconds
+
+    return () => clearTimeout(timer); // cleanup on unmount
   }, []);
 
   // Normalize size array from DB
@@ -172,9 +182,9 @@ const Index = () => {
   const getImageByColor = (product, color, index = 0) => {
     if (!product?.images?.length) return '';
     const match = product.images.find((img) => img.color?.toLowerCase() === color?.toLowerCase());
-    if (match?.urls?.[index]) return `http://142.93.171.166/${match.urls[index]}`;
+    if (match?.urls?.[index]) return `https://142.93.171.166/${match.urls[index]}`;
     const fallback = product.images.find((img) => img.urls?.[index]);
-    return fallback ? `http://142.93.171.166/${fallback.urls[index]}` : '';
+    return fallback ? `https://142.93.171.166/${fallback.urls[index]}` : '';
   };
 
   const handleChange = (event, newValue) => setValue(newValue);
@@ -198,6 +208,8 @@ const Index = () => {
 
   return (
     <div style={{ width: '100%', height: "auto",overflowY:"none" }}>
+      {loading && <Loader isLoading={loading} />}
+
       {/* Header */}
       {FunnelIC && (
         <div onClick={() => setFunnel(!FunnelIC)} className='overflow-2'>
@@ -339,95 +351,107 @@ const Index = () => {
       </AnimatePresence>
 
       {/* Product Grid */}
-      <div className='ProductsU'>
-          {filteredProducts.length === 0 ? (
-            <div>
-              <div className="no-products-container">
-                <div className="no-products-content">
-                  <div className="icon-wrapper">
-                    <Package size={64} />
-                  </div>
-                  <h2>No Products Yet</h2>
-                  <p>
-                    We're currently working on adding products to this category.
-                    <br />
-                    Check back soon for exciting new arrivals!
-                  </p>
-                  <span className="coming-soon">Coming Soon</span>
-                </div>
-              </div>
-              <h1 style={{
-                fontSize: '19px',
-                fontWeight: 400,
-                marginTop: '0%',
-                marginLeft: '40%'
-              }}>You might be interested in</h1>
-
-              <div className='ProductsU'>
-                {products.map((product, index) => {
-                  const color = selectedColors[product._id];
-                  const mainImg = getImageByColor(product, color,3);
-                  const secondImg = getImageByColor(product, color, 0);
-                  const isHovered = hoveredProductId === product._id;
-
-                  let sizes = [];
-                  try {
-                    if (Array.isArray(product.size)) {
-                      sizes =
-                        typeof product.size[0] === "string"
-                          ? JSON.parse(product.size[0])
-                          : product.size;
-                    }
-                  } catch (err) {
-                    console.error("Error parsing sizes:", err);
-                  }
-
-                  return (
-                    <div
-                      className="productU"
-                      style={{height:"450px"}}
-                      key={product._id || index}
-                      onClick={() =>
-                        navigate(`/PorductSelecte/${product._id}`, {
-                          state: {
-                            parentCategoryId: product.categoryId,
-                            subcategoryId: product.subcategoryId,
-                            genre: product.genre,
-                          },
-                        })
-                      }
-                    >
-                      <div
-                        className="hoverImg"
-                        onMouseEnter={() => setHoveredProductId(product._id)}
-                        onMouseLeave={() => setHoveredProductId(null)}
-                      >
-                        <img
-                          src={isHovered && secondImg ? secondImg : mainImg}
-                          alt={product.name}
-                          onError={(e) => (e.target.src = "/default.png")}
-                        />
-
-                        {/* If you want to show sizes on hover, uncomment below */}
-                        {isHovered && (
-                          <div className="sizesPU">
-                            <h4>Sizes</h4>
-                            <div className="sizes-container">
-                              {sizes.map((s, indx) => (
-                                <div key={indx} className="size-box">{s}</div>
-                              ))}
-                            </div>
-                          </div>
-                        )}
+      <motion.div
+        className="ProductsU"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: {},
+          visible: {
+            transition: {
+              staggerChildren: 0.05
+            }
+          }
+        }}
+      >        
+        {filteredProducts.length === 0 ? (
+                  <div>
+                    <div className="no-products-container">
+                      <div className="no-products-content">
+                        <div className="icon-wrapper">
+                          <Package size={64} />
+                        </div>
+                        <h2>No Products Yet</h2>
+                        <p>
+                          We're currently working on adding products to this category.
+                          <br />
+                          Check back soon for exciting new arrivals!
+                        </p>
+                        <span className="coming-soon">Coming Soon</span>
                       </div>
-                      <p>{product.name}</p>
-                      <h3>{product.price} TND</h3>
                     </div>
-                  );
-                })}
-              </div>
-            </div>
-          ) : (
+                    <h1 style={{
+                      fontSize: '19px',
+                      fontWeight: 400,
+                      marginTop: '0%',
+                      marginLeft: '40%'
+                    }}>You might be interested in</h1>
+
+                    <div className='ProductsU'>
+                      {products.map((product, index) => {
+                        const color = selectedColors[product._id];
+                        const mainImg = getImageByColor(product, color,3);
+                        const secondImg = getImageByColor(product, color, 0);
+                        const isHovered = hoveredProductId === product._id;
+
+                        let sizes = [];
+                        try {
+                          if (Array.isArray(product.size)) {
+                            sizes =
+                              typeof product.size[0] === "string"
+                                ? JSON.parse(product.size[0])
+                                : product.size;
+                          }
+                        } catch (err) {
+                          console.error("Error parsing sizes:", err);
+                        }
+
+                        return (
+                          <div
+                            className="productU"
+                            style={{height:"450px"}}
+                            key={product._id || index}
+                            onClick={() =>
+                              navigate(`/PorductSelecte/${product._id}`, {
+                                state: {
+                                  parentCategoryId: product.categoryId,
+                                  subcategoryId: product.subcategoryId,
+                                  genre: product.genre,
+                                },
+                              })
+                            }
+                          >
+                            <div
+                              className="hoverImg"
+                              onMouseEnter={() => setHoveredProductId(product._id)}
+                              onMouseLeave={() => setHoveredProductId(null)}
+                            >
+                              <img
+                                src={isHovered && secondImg ? secondImg : mainImg}
+                                alt={product.name}
+                                onError={(e) => (e.target.src = "/default.png")}
+                              />
+
+                              {/* If you want to show sizes on hover, uncomment below */}
+                              {isHovered && (
+                                <div className="sizesPU">
+                                  <h4>Sizes</h4>
+                                  <div className="sizes-container">
+                                    {sizes.map((s, indx) => (
+                                      <div key={indx} className="size-box">{s}</div>
+                                    ))}
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                            <p>{product.name}</p>
+                            <h3>{product.price} TND</h3>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ) : (
             
             filteredProducts.map((product, index) => {
               const color = selectedColors[product._id];
@@ -447,51 +471,76 @@ const Index = () => {
                 console.error("Error parsing sizes:", err);
               }
 
-              return (
-                <div
-                  className="productU"
-                  key={product._id || index}
-                  onClick={() =>
-                    navigate(`/PorductSelecte/${product._id}`, {
-                      state: {
-                        parentCategoryId: product.categoryId,
-                        subcategoryId: product.subcategoryId,
-                        genre: product.genre,
-                      },
-                    })
-                  }
-                >
-                  <div
-                    className="hoverImg"
+                return (
+                  <motion.div
+                    className="productU"
+                    key={product._id || index}
+                    onClick={() =>
+                      navigate(`/PorductSelecte/${product._id}`, {
+                        state: {
+                          parentCategoryId: product.categoryId,
+                          subcategoryId: product.subcategoryId,
+                          genre: product.genre,
+                        },
+                      })
+                    }
                     onMouseEnter={() => setHoveredProductId(product._id)}
                     onMouseLeave={() => setHoveredProductId(null)}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 20 }}
+                    transition={{ duration: 0.3, ease: "easeInOut" }}
+                    style={{ height: "550px" }}
                   >
-                    <img
-                      src={isHovered && secondImg ? secondImg : mainImg}
-                      alt={product.name}
-                      onError={(e) => (e.target.src = "/default.png")}
-                    />
+                    <div className="hoverImg">
+                      <motion.img
+                        src={isHovered && secondImg ? secondImg : mainImg}
+                        alt={product.name}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.4 }}
+                        onError={(e) => (e.target.src = "/default.png")}
+                      />
 
-                    {/* If you want to show sizes on hover, uncomment below */}
-                    {isHovered && (
-                      <div className="sizesPU">
-                        <h4>Sizes</h4>
-                        <div className="sizes-container">
-                          {sizes.map((s, indx) => (
-                            <div key={indx} className="size-box">{s}</div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                  <p>{product.name}</p>
-                  <h3>{product.price} TND</h3>
-                </div>
-              );
+                      <AnimatePresence>
+                        {isHovered && (
+                          <motion.div
+                            className="sizesPU"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            <h4>Sizes</h4>
+                            <div className="sizes-container">
+                              {sizes.map((s, indx) => (
+                                <div key={indx} className="size-box">{s}</div>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                    <motion.p
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.1 }}
+                    >
+                      {product.name}
+                    </motion.p>
+                    <motion.h3
+                      initial={{ opacity: 0, y: 5 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: 0.2 }}
+                    >
+                      {product.price} TND
+                    </motion.h3>
+                  </motion.div>
+                );
             })
           )}
 
-      </div>
+      </motion.div>
       <div className="SearchMobileProductS" id="ProductsUMobile" style={{ marginTop: "4%" }}>
         {filteredProducts.length === 0 ? (
           <div>
@@ -528,7 +577,7 @@ const Index = () => {
                   )}
                 >
                   <img
-                    src={`http://142.93.171.166/${prod.images[0]?.urls[3]}`}
+                    src={`https://142.93.171.166/${prod.images[0]?.urls[3]}`}
                     alt={prod.name}
                   />
                   <h2>{prod.name}</h2>
@@ -556,7 +605,7 @@ const Index = () => {
               )}
             >
               <img
-                src={`http://142.93.171.166/${prod.images[0]?.urls[0]}`}
+                src={`https://142.93.171.166/${prod.images[0]?.urls[0]}`}
                 alt={prod.name}
               />
               <h2>{prod.name}</h2>
