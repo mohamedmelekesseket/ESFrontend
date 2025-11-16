@@ -212,7 +212,7 @@ function HeaderBar({showBag,setShowBag}   ) {
     let normalizedPath = imagePath.replace(/\\/g, '/');
     return normalizedPath.startsWith('http')
       ? normalizedPath
-      : `http://142.93.171.166/${normalizedPath.replace(/^\//, '')}`;
+      : `http://142.93.171.166/uploads/${normalizedPath.replace(/^\//, '')}`;
   };
 
   const getImageByColor = (product, color, index = 0) => {
@@ -487,7 +487,7 @@ function HeaderBar({showBag,setShowBag}   ) {
                   subcategoryId: prod.subcategoryId,
                   genre: prod.genre,
                 }}),setSearchMobile(false))}>
-                  <img src={`http://142.93.171.166/${prod.images[0]?.urls[3]}`} alt="" />
+                  <img src={`http://142.93.171.166/uploads/${prod.images[0]?.urls[3]}`} alt="" />
                   <h2>{prod.name}</h2>
                   <h3>{prod.price} TND</h3>
 
@@ -604,7 +604,7 @@ function HeaderBar({showBag,setShowBag}   ) {
                     setShowSearch(false);
                   }}
                 >
-                  <img src={`http://142.93.171.166/${prod.images[0]?.urls[3]}`} alt="" />
+                  <img src={`http://142.93.171.166/uploads/${prod.images[0]?.urls[3]}`} alt="" />
                   <h2>{prod.name}</h2>
                   <h3>{prod.price} TND</h3>
                 </div>
@@ -790,19 +790,19 @@ function HeaderBar({showBag,setShowBag}   ) {
        
         <AnimatePresence>
           {showBag && (
-            <motion.div
-              id='ShoppingBag'
-              className={`ShoppingBag ${showBag ? 'open' : ''}`}
-              initial={{ width: 0, opacity: 0, x: 100 }}
-              animate={{ width: "29%", opacity: 1, x: 0 }}
-              exit={{ width: 0, opacity: 0, x: 100 }}
-              transition={{
-                width: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
-                opacity: { duration: 0.3, ease: "easeOut" },
-                x: { duration: 0.4, ease: [0.4, 0, 0.2, 1] }
-              }}
-              style={{ overflow: "hidden" }}
-            >
+          <motion.div
+            id="ShoppingBag"
+            className={`ShoppingBag ${showBag ? "open" : ""}`}
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 100 }}
+            transition={{
+              opacity: { duration: 0.3, ease: "easeOut" },
+              x: { duration: 0.4, ease: [0.4, 0, 0.2, 1] }
+            }}
+            style={{ overflow: "hidden" }}
+>
+
           {productCart.cart?.products?.length === 0 || !user ?(          
             <div>
               <X className='XMobileBag' onClick={()=>setShowBag(false)} style={{display: showBag ?"":"none",cursor:"pointer", marginLeft:"90%"}}/>
@@ -826,7 +826,7 @@ function HeaderBar({showBag,setShowBag}   ) {
                 <div id='FeaturedProductCards' className='FeaturedProductCards'>
                   {Products.slice(0, 4).map((prod, index) => 
                   <div key={prod._id || index} id='FeaturedProductCard' className='FeaturedProductCard'>
-                    <img src={`http://142.93.171.166/${prod.images[0]?.urls[3]}`} alt="" />
+                    <img src={`http://142.93.171.166/uploads/${prod.images[0]?.urls[3]}`} alt="" />
                     <h2>{prod.name}</h2>
                     <h3>{prod.price} TND</h3>
 
