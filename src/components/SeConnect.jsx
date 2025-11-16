@@ -46,7 +46,7 @@ const Login = () => {
             return
         }
         try {
-            const res = await axios.post('https://142.93.171.166/api/SignUp', {
+            const res = await axios.post('https://esseket.duckdns.org/api/SignUp', {
                 email,
                 phoneNumber,
                 password
@@ -86,7 +86,7 @@ const Login = () => {
             return
         }
         try {
-            const res = await axios.post('https://142.93.171.166/api/SignIn', {
+            const res = await axios.post('https://esseket.duckdns.org/api/SignIn', {
                 email,
                 phoneNumber,
                 password

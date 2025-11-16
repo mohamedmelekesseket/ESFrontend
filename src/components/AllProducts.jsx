@@ -21,7 +21,7 @@ const AllProducts = () => {
 
   const getCategory = async () => {
     try {
-      const res = await axios.get("https://142.93.171.166/api/Admin/Get-category", {
+      const res = await axios.get("https://esseket.duckdns.org/api/Admin/Get-category", {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
       setCategorys(res.data);
@@ -32,7 +32,7 @@ const AllProducts = () => {
 
   const getSubCategory = async (id) => {
     try {
-      const res = await axios.get(`https://142.93.171.166/api/Admin/Get-Subcategory/${id}`, {
+      const res = await axios.get(`https://esseket.duckdns.org/api/Admin/Get-Subcategory/${id}`, {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
       setSubCategorys(res.data);
@@ -43,7 +43,7 @@ const AllProducts = () => {
 
   const getProducts = async () => {
     try {
-      const res = await axios.get("https://142.93.171.166/api/Admin/Get-products", {
+      const res = await axios.get("https://esseket.duckdns.org/api/Admin/Get-products", {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
       setProducts(res.data);
@@ -114,7 +114,7 @@ const AllProducts = () => {
 
     // Case 1: images are just file paths
     if (typeof firstItem === 'string') {
-      return `https://142.93.171.166/${firstItem}`;
+      return `https://esseket.duckdns.org/${firstItem}`;
     }
 
     // Case 2: images are objects with color & urls
@@ -123,12 +123,12 @@ const AllProducts = () => {
         img.color?.toLowerCase() === color?.toLowerCase()
       );
       if (match?.urls?.[0]) {
-        return `https://142.93.171.166/${match.urls[0]}`;
+        return `https://esseket.duckdns.org/${match.urls[0]}`;
       }
 
       const fallback = product.images.find(img => img.urls?.[0]);
       if (fallback) {
-        return `https://142.93.171.166/${fallback.urls[0]}`;
+        return `https://esseket.duckdns.org/${fallback.urls[0]}`;
       }
     }
 
@@ -141,7 +141,7 @@ const AllProducts = () => {
     if (typeof firstItem === 'object') {
       const match = product.images.find(img => img.color?.toLowerCase() === color?.toLowerCase());
       if (match?.urls?.[1]) {
-        return `https://142.93.171.166/${match.urls[1]}`;
+        return `https://esseket.duckdns.org/${match.urls[1]}`;
       }
     }
     return '';

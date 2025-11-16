@@ -34,8 +34,8 @@ const ProductSelect = ({ setShowBag }) => {
 
   const getSafeImageUrl = (img) => {
     if (!img) return '/default.png';
-    if (typeof img === 'string') return `https://142.93.171.166/${img}`;
-    if (typeof img === 'object' && img.urls?.length) return `https://142.93.171.166/${img.urls[0]}`;
+    if (typeof img === 'string') return `https://esseket.duckdns.org/${img}`;
+    if (typeof img === 'object' && img.urls?.length) return `https://esseket.duckdns.org/${img.urls[0]}`;
     return '/default.png';
   };
 
@@ -43,7 +43,7 @@ const fetchProducts = async () => {
   setLoading(true);
 
   try {
-    const res = await axios.get('https://142.93.171.166/api/Admin/Get-products');
+    const res = await axios.get('https://esseket.duckdns.org/api/Admin/Get-products');
 
     const filtered = res.data.filter(
       p => p.subcategoryId === subcategoryId && p.genre === genre
@@ -106,16 +106,16 @@ const fetchProducts = async () => {
     if (!product?.images?.length) return '';
     const firstItem = product.images[0];
     if (typeof firstItem === 'string') {
-      return `https://142.93.171.166/${firstItem}`;
+      return `https://esseket.duckdns.org/${firstItem}`;
     }
     if (typeof firstItem === 'object') {
       const match = product.images.find(img => img.color?.toLowerCase() === color?.toLowerCase());
       if (match?.urls?.[index]) {
-        return `https://142.93.171.166/${match.urls[index]}`;
+        return `https://esseket.duckdns.org/${match.urls[index]}`;
       }
       const fallback = product.images.find(img => img.urls?.[index]);
       if (fallback) {
-        return `https://142.93.171.166/${fallback.urls[index]}`;
+        return `https://esseket.duckdns.org/${fallback.urls[index]}`;
       }
     }
     return '';
@@ -126,7 +126,7 @@ const fetchProducts = async () => {
     const colorObj = images.find(img => img.color?.toLowerCase() === selectedColor?.toLowerCase());
     if (colorObj?.urls?.length > 0) {
       const idx = Math.max(0, Math.min(currentImageIndex, colorObj.urls.length - 1));
-      setImage(`https://142.93.171.166/${colorObj.urls[idx]}`);
+      setImage(`https://esseket.duckdns.org/${colorObj.urls[idx]}`);
     } else {
       setImage(getSafeImageUrl(images[0]));
     }
@@ -186,7 +186,7 @@ const fetchProducts = async () => {
         products: [{ productId: id, quantity: 1, size: selectedSize, color: selectedColor }]
       };
 
-      const res = await axios.post('https://142.93.171.166/api/AddToCart', cartData, {
+      const res = await axios.post('https://esseket.duckdns.org/api/AddToCart', cartData, {
         headers: {
           'Authorization': `Bearer ${user.token}`,
           'Content-Type': 'application/json'
@@ -476,7 +476,7 @@ const fetchProducts = async () => {
                   genre: prod.genre,
                 }
               }), scrollToTop())}>
-              <img src={`https://142.93.171.166/${prod.images[0]?.urls[3]}`} alt="" />
+              <img src={`https://esseket.duckdns.org/${prod.images[0]?.urls[3]}`} alt="" />
               <h2>{prod.name}</h2>
               <h3>{prod.price} TND</h3>
             </div>

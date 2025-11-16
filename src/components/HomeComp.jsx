@@ -89,7 +89,7 @@ const sendMail = async () => {
   
   // API call
   try {
-    const res = await axios.post("https://142.93.171.166/api/Contactez-nous", {
+    const res = await axios.post("https://esseket.duckdns.org/api/Contactez-nous", {
       name,
       subject,
       email,
@@ -114,7 +114,7 @@ const sendMail = async () => {
   }
   const getProducts = async () => {
     try {
-      const res = await axios.get("https://142.93.171.166/api/GetProduct");
+      const res = await axios.get("https://esseket.duckdns.org/api/GetProduct");
        const featuredProducts = res.data
         .filter(p => p.isFeatured)
         .slice(0, 4);
@@ -138,7 +138,7 @@ const sendMail = async () => {
 
     setIsSubscribing(true)
     try {
-      const res = await axios.post('https://142.93.171.166/api/Subscribe', {
+      const res = await axios.post('https://esseket.duckdns.org/api/Subscribe', {
         email,
       })
       
@@ -210,7 +210,7 @@ const sendMail = async () => {
               key={prod._id}
               className="selectCard"
               style={{
-                backgroundImage: `url("https://142.93.171.166/${imagePath}")`,
+                backgroundImage: `url("https://esseket.duckdns.org/${imagePath}")`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 width: getCardWidth(index),
@@ -341,7 +341,7 @@ const sendMail = async () => {
                   genre: prod.genre,
                 }
               }))}>
-            <img src={`https://142.93.171.166/${prod.images[0]?.urls[3]}`} alt="" />
+            <img src={`https://esseket.duckdns.org/${prod.images[0]?.urls[3]}`} alt="" />
             <h2>{prod.name}</h2>
             <h3>{prod.price} TND</h3>
 

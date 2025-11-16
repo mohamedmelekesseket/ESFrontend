@@ -39,7 +39,7 @@ const Index = () => {
   useEffect(() => {
     const getCategory = async () => {
       try {
-        const res = await axios.get('https://142.93.171.166/api/Admin/Get-category');
+        const res = await axios.get('https://esseket.duckdns.org/api/Admin/Get-category');
         setCategories(res.data);
       } catch (error) {
         toast.error(error.response?.data?.message || "Error fetching categories");
@@ -53,7 +53,7 @@ const Index = () => {
     if (!parentCategoryId) return;
     const getSubCategory = async () => {
       try {
-        const res = await axios.get(`https://142.93.171.166/api/Admin/Get-Subcategory/${parentCategoryId}`);
+        const res = await axios.get(`https://esseket.duckdns.org/api/Admin/Get-Subcategory/${parentCategoryId}`);
         setSubcategories(res.data);
       } catch (error) {
         toast.error(error.response?.data?.message || "Error fetching subcategories");
@@ -67,7 +67,7 @@ const Index = () => {
     const getProducts = async () => {
       
       try {
-        const res = await axios.get('https://142.93.171.166/api/Admin/Get-products');
+        const res = await axios.get('https://esseket.duckdns.org/api/Admin/Get-products');
         setProducts(res.data);
       } catch (error) {
         toast.error("Failed to fetch products");
@@ -182,9 +182,9 @@ const Index = () => {
   const getImageByColor = (product, color, index = 0) => {
     if (!product?.images?.length) return '';
     const match = product.images.find((img) => img.color?.toLowerCase() === color?.toLowerCase());
-    if (match?.urls?.[index]) return `https://142.93.171.166/${match.urls[index]}`;
+    if (match?.urls?.[index]) return `https://esseket.duckdns.org/${match.urls[index]}`;
     const fallback = product.images.find((img) => img.urls?.[index]);
-    return fallback ? `https://142.93.171.166/${fallback.urls[index]}` : '';
+    return fallback ? `https://esseket.duckdns.org/${fallback.urls[index]}` : '';
   };
 
   const handleChange = (event, newValue) => setValue(newValue);
@@ -577,7 +577,7 @@ const Index = () => {
                   )}
                 >
                   <img
-                    src={`https://142.93.171.166/${prod.images[0]?.urls[3]}`}
+                    src={`https://esseket.duckdns.org/${prod.images[0]?.urls[3]}`}
                     alt={prod.name}
                   />
                   <h2>{prod.name}</h2>
@@ -605,7 +605,7 @@ const Index = () => {
               )}
             >
               <img
-                src={`https://142.93.171.166/${prod.images[0]?.urls[0]}`}
+                src={`https://esseket.duckdns.org/${prod.images[0]?.urls[0]}`}
                 alt={prod.name}
               />
               <h2>{prod.name}</h2>

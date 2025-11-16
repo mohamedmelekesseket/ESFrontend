@@ -56,7 +56,7 @@ const ProfileComp = () => {
         return toast.error('Please fill in all required fields');
       }
 
-      const res = await axios.put(`https://142.93.171.166/api/UpdateProfile/${user.id}`, {
+      const res = await axios.put(`https://esseket.duckdns.org/api/UpdateProfile/${user.id}`, {
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
@@ -96,7 +96,7 @@ const ProfileComp = () => {
         return toast.error('Password must be at least 6 characters long');
       }
 
-      const res = await axios.put(`https://142.93.171.166/api/ChangePassword/${user.id}`, {
+      const res = await axios.put(`https://esseket.duckdns.org/api/ChangePassword/${user.id}`, {
         currentPassword: formData.currentPassword,
         newPassword: formData.newPassword
       }, {
