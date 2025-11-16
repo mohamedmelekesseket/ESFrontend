@@ -172,9 +172,9 @@ const Index = () => {
   const getImageByColor = (product, color, index = 0) => {
     if (!product?.images?.length) return '';
     const match = product.images.find((img) => img.color?.toLowerCase() === color?.toLowerCase());
-    if (match?.urls?.[index]) return `http://142.93.171.166/uploads/${match.urls[index]}`;
+    if (match?.urls?.[index]) return `http://142.93.171.166/${match.urls[index]}`;
     const fallback = product.images.find((img) => img.urls?.[index]);
-    return fallback ? `http://142.93.171.166/uploads/${fallback.urls[index]}` : '';
+    return fallback ? `http://142.93.171.166/${fallback.urls[index]}` : '';
   };
 
   const handleChange = (event, newValue) => setValue(newValue);
@@ -528,7 +528,7 @@ const Index = () => {
                   )}
                 >
                   <img
-                    src={`http://142.93.171.166/uploads/${prod.images[0]?.urls[3]}`}
+                    src={`http://142.93.171.166/${prod.images[0]?.urls[3]}`}
                     alt={prod.name}
                   />
                   <h2>{prod.name}</h2>
@@ -556,7 +556,7 @@ const Index = () => {
               )}
             >
               <img
-                src={`http://142.93.171.166/uploads/${prod.images[0]?.urls[0]}`}
+                src={`http://142.93.171.166/${prod.images[0]?.urls[0]}`}
                 alt={prod.name}
               />
               <h2>{prod.name}</h2>

@@ -71,7 +71,7 @@ const getSafeImageUrl = (imagePath) => {
   let normalizedPath = imagePath.replace(/\\/g, '/');
   return normalizedPath.startsWith('http')
     ? normalizedPath
-    : `http://142.93.171.166/uploads/${normalizedPath.replace(/^\//, '')}`;
+    : `http://142.93.171.166/${normalizedPath.replace(/^\//, '')}`;
 };
 const getImageByColor = (product, color, index = 0) => {
   if (!product?.images?.length) {

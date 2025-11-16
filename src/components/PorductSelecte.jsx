@@ -32,8 +32,8 @@ const ProductSelect = ({ setShowBag }) => {
 
   const getSafeImageUrl = (img) => {
     if (!img) return '/default.png';
-    if (typeof img === 'string') return `http://142.93.171.166/uploads/${img}`;
-    if (typeof img === 'object' && img.urls?.length) return `http://142.93.171.166/uploads/${img.urls[0]}`;
+    if (typeof img === 'string') return `http://142.93.171.166/${img}`;
+    if (typeof img === 'object' && img.urls?.length) return `http://142.93.171.166/${img.urls[0]}`;
     return '/default.png';
   };
 
@@ -85,16 +85,16 @@ const ProductSelect = ({ setShowBag }) => {
     if (!product?.images?.length) return '';
     const firstItem = product.images[0];
     if (typeof firstItem === 'string') {
-      return `http://142.93.171.166/uploads/${firstItem}`;
+      return `http://142.93.171.166/${firstItem}`;
     }
     if (typeof firstItem === 'object') {
       const match = product.images.find(img => img.color?.toLowerCase() === color?.toLowerCase());
       if (match?.urls?.[index]) {
-        return `http://142.93.171.166/uploads/${match.urls[index]}`;
+        return `http://142.93.171.166/${match.urls[index]}`;
       }
       const fallback = product.images.find(img => img.urls?.[index]);
       if (fallback) {
-        return `http://142.93.171.166/uploads/${fallback.urls[index]}`;
+        return `http://142.93.171.166/${fallback.urls[index]}`;
       }
     }
     return '';
@@ -105,7 +105,7 @@ const ProductSelect = ({ setShowBag }) => {
     const colorObj = images.find(img => img.color?.toLowerCase() === selectedColor?.toLowerCase());
     if (colorObj?.urls?.length > 0) {
       const idx = Math.max(0, Math.min(currentImageIndex, colorObj.urls.length - 1));
-      setImage(`http://142.93.171.166/uploads/${colorObj.urls[idx]}`);
+      setImage(`http://142.93.171.166/${colorObj.urls[idx]}`);
     } else {
       setImage(getSafeImageUrl(images[0]));
     }
@@ -454,7 +454,7 @@ const ProductSelect = ({ setShowBag }) => {
                   genre: prod.genre,
                 }
               }), scrollToTop())}>
-              <img src={`http://142.93.171.166/uploads/${prod.images[0]?.urls[3]}`} alt="" />
+              <img src={`http://142.93.171.166/${prod.images[0]?.urls[3]}`} alt="" />
               <h2>{prod.name}</h2>
               <h3>{prod.price} TND</h3>
             </div>

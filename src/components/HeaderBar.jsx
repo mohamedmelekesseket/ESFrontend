@@ -212,7 +212,7 @@ function HeaderBar({showBag,setShowBag}   ) {
     let normalizedPath = imagePath.replace(/\\/g, '/');
     return normalizedPath.startsWith('http')
       ? normalizedPath
-      : `http://142.93.171.166/uploads/${normalizedPath.replace(/^\//, '')}`;
+      : `http://142.93.171.166/${normalizedPath.replace(/^\//, '')}`;
   };
 
   const getImageByColor = (product, color, index = 0) => {
@@ -487,7 +487,7 @@ function HeaderBar({showBag,setShowBag}   ) {
                   subcategoryId: prod.subcategoryId,
                   genre: prod.genre,
                 }}),setSearchMobile(false))}>
-                  <img src={`http://142.93.171.166/uploads/${prod.images[0]?.urls[3]}`} alt="" />
+                  <img src={`http://142.93.171.166/${prod.images[0]?.urls[3]}`} alt="" />
                   <h2>{prod.name}</h2>
                   <h3>{prod.price} TND</h3>
 
@@ -604,7 +604,7 @@ function HeaderBar({showBag,setShowBag}   ) {
                     setShowSearch(false);
                   }}
                 >
-                  <img src={`http://142.93.171.166/uploads/${prod.images[0]?.urls[3]}`} alt="" />
+                  <img src={`http://142.93.171.166/${prod.images[0]?.urls[3]}`} alt="" />
                   <h2>{prod.name}</h2>
                   <h3>{prod.price} TND</h3>
                 </div>
@@ -634,7 +634,7 @@ function HeaderBar({showBag,setShowBag}   ) {
                 )}
               </div>
               <Search className='SearchX' onClick={()=>(setShowSearch(!showSearch))} style={{color:"white",cursor:"pointer"}}/>
-              <ShoppingBag onClick={()=>(setShowMenu(false),setShowUser(false),setShowBag(!showBag))} style={{cursor:"pointer",color:"red"}}/>
+              <ShoppingBag onClick={()=>(setShowMenu(false),setShowUser(false),setShowBag(!showBag))} style={{cursor:"pointer",color:"white"}}/>
               {
                 productCart.cart?.products?.length === 0 ?(
                   ''
@@ -821,19 +821,19 @@ function HeaderBar({showBag,setShowBag}   ) {
                   <button  onClick={()=>setShowMenu(true)}>Start Shopping</button>
                 </Link>
               </div>
-              <div className='MobileBagProduct'>
+              {/* <div className='MobileBagProduct'>
                 <h1>you might be interested in</h1>
                 <div id='FeaturedProductCards' className='FeaturedProductCards'>
                   {Products.slice(0, 4).map((prod, index) => 
                   <div key={prod._id || index} id='FeaturedProductCard' className='FeaturedProductCard'>
-                    <img src={`http://142.93.171.166/uploads/${prod.images[0]?.urls[3]}`} alt="" />
+                    <img src={`http://142.93.171.166/${prod.images[0]?.urls[3]}`} alt="" />
                     <h2>{prod.name}</h2>
                     <h3>{prod.price} TND</h3>
 
                   </div>
                   )}
                 </div>
-              </div>
+              </div> */}
             </div>
           ):(
             <div className='PdSb'>
