@@ -18,7 +18,7 @@ const UserBord = () => {
     const getUser = async () => {  
     try {
       // TODO: Replace hardcoded API URL with environment variable for production
-      const res = await axios.get("http://192.168.1.17:2025/api/Owner/getUser  ",{
+      const res = await axios.get("http://142.93.171.166/api/Owner/getUser  ",{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -42,7 +42,7 @@ const UserBord = () => {
           return toast.error('select new role or close')
         }
       // TODO: Replace hardcoded API URL with environment variable for production
-      const res = await axios.put(`http://192.168.1.17:2025/api/Owner/Update-User/${id}` ,{
+      const res = await axios.put(`http://142.93.171.166/api/Owner/Update-User/${id}` ,{
         role
       },{
         headers: {
@@ -89,7 +89,7 @@ const UserBord = () => {
   const confirmDelete = async (id, toastId) => {
     try {
       // TODO: Replace hardcoded API URL with environment variable for production
-      const res = await axios.delete(`http://192.168.1.17:2025/api/Owner/DeleteUser/${id}`,{
+      const res = await axios.delete(`http://142.93.171.166/api/Owner/DeleteUser/${id}`,{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }

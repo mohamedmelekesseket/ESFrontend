@@ -46,7 +46,7 @@ const Login = () => {
             return
         }
         try {
-            const res = await axios.post('http://192.168.1.17:2025/api/SignUp', {
+            const res = await axios.post('http://142.93.171.166/api/SignUp', {
                 email,
                 phoneNumber,
                 password
@@ -86,7 +86,7 @@ const Login = () => {
             return
         }
         try {
-            const res = await axios.post('http://192.168.1.17:2025/api/SignIn', {
+            const res = await axios.post('http://142.93.171.166/api/SignIn', {
                 email,
                 phoneNumber,
                 password

@@ -37,7 +37,7 @@ const Index = () => {
   useEffect(() => {
     const getCategory = async () => {
       try {
-        const res = await axios.get('http://192.168.1.17:2025/api/Admin/Get-category');
+        const res = await axios.get('http://142.93.171.166/api/Admin/Get-category');
         setCategories(res.data);
       } catch (error) {
         toast.error(error.response?.data?.message || "Error fetching categories");
@@ -51,7 +51,7 @@ const Index = () => {
     if (!parentCategoryId) return;
     const getSubCategory = async () => {
       try {
-        const res = await axios.get(`http://192.168.1.17:2025/api/Admin/Get-Subcategory/${parentCategoryId}`);
+        const res = await axios.get(`http://142.93.171.166/api/Admin/Get-Subcategory/${parentCategoryId}`);
         setSubcategories(res.data);
       } catch (error) {
         toast.error(error.response?.data?.message || "Error fetching subcategories");
@@ -64,7 +64,7 @@ const Index = () => {
   useEffect(() => {
     const getProducts = async () => {
       try {
-        const res = await axios.get('http://192.168.1.17:2025/api/Admin/Get-products');
+        const res = await axios.get('http://142.93.171.166/api/Admin/Get-products');
         setProducts(res.data);
       } catch (error) {
         toast.error("Failed to fetch products");
@@ -172,9 +172,9 @@ const Index = () => {
   const getImageByColor = (product, color, index = 0) => {
     if (!product?.images?.length) return '';
     const match = product.images.find((img) => img.color?.toLowerCase() === color?.toLowerCase());
-    if (match?.urls?.[index]) return `http://192.168.1.17:2025/${match.urls[index]}`;
+    if (match?.urls?.[index]) return `http://142.93.171.166/${match.urls[index]}`;
     const fallback = product.images.find((img) => img.urls?.[index]);
-    return fallback ? `http://192.168.1.17:2025/${fallback.urls[index]}` : '';
+    return fallback ? `http://142.93.171.166/${fallback.urls[index]}` : '';
   };
 
   const handleChange = (event, newValue) => setValue(newValue);
@@ -528,7 +528,7 @@ const Index = () => {
                   )}
                 >
                   <img
-                    src={`http://192.168.1.17:2025/${prod.images[0]?.urls[3]}`}
+                    src={`http://142.93.171.166/${prod.images[0]?.urls[3]}`}
                     alt={prod.name}
                   />
                   <h2>{prod.name}</h2>
@@ -556,7 +556,7 @@ const Index = () => {
               )}
             >
               <img
-                src={`http://192.168.1.17:2025/${prod.images[0]?.urls[0]}`}
+                src={`http://142.93.171.166/${prod.images[0]?.urls[0]}`}
                 alt={prod.name}
               />
               <h2>{prod.name}</h2>

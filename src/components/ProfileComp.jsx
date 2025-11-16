@@ -56,7 +56,7 @@ const ProfileComp = () => {
         return toast.error('Please fill in all required fields');
       }
 
-      const res = await axios.put(`http://localhost:2025/api/UpdateProfile/${user.id}`, {
+      const res = await axios.put(`http://142.93.171.166/api/UpdateProfile/${user.id}`, {
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
@@ -96,7 +96,7 @@ const ProfileComp = () => {
         return toast.error('Password must be at least 6 characters long');
       }
 
-      const res = await axios.put(`http://localhost:2025/api/ChangePassword/${user.id}`, {
+      const res = await axios.put(`http://142.93.171.166/api/ChangePassword/${user.id}`, {
         currentPassword: formData.currentPassword,
         newPassword: formData.newPassword
       }, {

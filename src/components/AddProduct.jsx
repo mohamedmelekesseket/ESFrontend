@@ -39,7 +39,7 @@ const AddProduct = () => {
   };
   const getCategory = async () => {  
     try {
-      const res = await axios.get("http://192.168.1.17:2025/api/Admin/Get-category",{
+      const res = await axios.get("http://142.93.171.166/api/Admin/Get-category",{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -58,7 +58,7 @@ const AddProduct = () => {
 
   const getSubCategory = async (id) => {  
     try {
-      const res = await axios.get(`http://192.168.1.17:2025/api/Admin/Get-Subcategory/${id}`,{
+      const res = await axios.get(`http://142.93.171.166/api/Admin/Get-Subcategory/${id}`,{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -171,7 +171,7 @@ const AddProduct = () => {
     }
     
     try {
-      const res= await axios.post('http://192.168.1.17:2025/api/Admin/Add-Product', formData, {
+      const res= await axios.post('http://142.93.171.166/api/Admin/Add-Product', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${user.token}`

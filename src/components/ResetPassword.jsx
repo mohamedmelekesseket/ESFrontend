@@ -40,11 +40,11 @@ const ResetPasword = () => {
   const ResetEmail = async () => {
     if (!email) return toast.error('Email Required !!')
 
-    const find = await axios.post("http://localhost:2025/api/CheckEmail", { email })
+    const find = await axios.post("http://142.93.171.166/api/CheckEmail", { email })
     if (find.status === 204) return toast.error('Email Not exist !!')
 
     try {
-      const res = await axios.post("http://localhost:2025/api/ResetEmail", { email })
+      const res = await axios.post("http://142.93.171.166/api/ResetEmail", { email })
       const { code } = res.data
       if (code) {
         setServerCode(code)
@@ -72,7 +72,7 @@ const ResetPasword = () => {
     if (password !== ConfPassword) return toast.error('❌ Password not matched')
 
     try {
-      const res = await axios.post(`http://localhost:2025/api/NewPassword`, { password, email })
+      const res = await axios.post(`http://142.93.171.166/api/NewPassword`, { password, email })
       if (res.status === 200) {
         toast.success("✅ Password changed successfully")
         setTimeout(() => navigate("/"), 1000)

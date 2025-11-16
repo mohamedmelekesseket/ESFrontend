@@ -19,7 +19,7 @@ const DashBord = () => {
   
     const getMessage = async () => {  
     try {
-      const res = await axios.get("http://localhost:2025/api/Owner/getMessage",{
+      const res = await axios.get("http://142.93.171.166/api/Owner/getMessage",{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -42,7 +42,7 @@ const DashBord = () => {
     const getUser = async () => {  
     try {
       // TODO: Replace hardcoded API URL with environment variable for production
-      const res = await axios.get("http://localhost:2025/api/Owner/getUser  ",{
+      const res = await axios.get("http://142.93.171.166/api/Owner/getUser  ",{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -58,7 +58,7 @@ const DashBord = () => {
   };
     const getCategory = async () => {  
     try {
-      const res = await axios.get("http://localhost:2025/api/Admin/Get-category",{
+      const res = await axios.get("http://142.93.171.166/api/Admin/Get-category",{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -74,7 +74,7 @@ const DashBord = () => {
   };
   const getProducts = async () => {
     try {
-      const res = await axios.get("http://localhost:2025/api/Admin/Get-products", {
+      const res = await axios.get("http://142.93.171.166/api/Admin/Get-products", {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
       setProducts(res.data);

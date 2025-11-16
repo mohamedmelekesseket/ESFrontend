@@ -45,7 +45,7 @@ const ModifyProduct = ({id,setModify}) => {
 
   const getCategory = async () => {  
     try {
-      const res = await axios.get("http://192.168.1.17:2025/api/Admin/Get-category",{
+      const res = await axios.get("http://142.93.171.166/api/Admin/Get-category",{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -63,7 +63,7 @@ const ModifyProduct = ({id,setModify}) => {
 
   const getSubCategory = async (id) => {  
     try {
-      const res = await axios.get(`http://192.168.1.17:2025/api/Admin/Get-Subcategory/${id}`,{
+      const res = await axios.get(`http://142.93.171.166/api/Admin/Get-Subcategory/${id}`,{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -149,7 +149,7 @@ const ModifyProduct = ({id,setModify}) => {
 
   const GetProduct = async () => {
     try {
-      const res = await axios.get(`http://192.168.1.17:2025/api/Admin/Get-product/${id}`, {
+      const res = await axios.get(`http://142.93.171.166/api/Admin/Get-product/${id}`, {
         headers: {
           'Authorization': `Bearer ${user.token}`
         }
@@ -236,7 +236,7 @@ const ModifyProduct = ({id,setModify}) => {
     }
     
     try {
-      const res = await axios.put(`http://192.168.1.17:2025/api/Admin/UpdateProduct/${id}`, formData, {
+      const res = await axios.put(`http://142.93.171.166/api/Admin/UpdateProduct/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${user.token}`
@@ -257,7 +257,7 @@ const ModifyProduct = ({id,setModify}) => {
   };
   const DeleteProduct = async () => {
     try {
-      const res = await axios.delete(`http://192.168.1.17:2025/api/Admin/Delete-Product/${id}`, {
+      const res = await axios.delete(`http://142.93.171.166/api/Admin/Delete-Product/${id}`, {
         headers: {
           'Authorization': `Bearer ${user.token}`
         }
@@ -303,7 +303,7 @@ const ModifyProduct = ({id,setModify}) => {
                       onClick={() => removeColorImage(color, idx, true)}
                     />
                     <img
-                      src={`http://192.168.1.17:2025/${url}`}
+                      src={`http://142.93.171.166/${url}`}
                       alt={`${color} ${idx}`}
                       style={{
                         width: "160px",
