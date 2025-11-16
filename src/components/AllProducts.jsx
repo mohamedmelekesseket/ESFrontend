@@ -114,7 +114,7 @@ const AllProducts = () => {
 
     // Case 1: images are just file paths
     if (typeof firstItem === 'string') {
-      return `http://142.93.171.166/${firstItem}`;
+      return `http://142.93.171.166/uploads/${firstItem}`;
     }
 
     // Case 2: images are objects with color & urls
@@ -123,12 +123,12 @@ const AllProducts = () => {
         img.color?.toLowerCase() === color?.toLowerCase()
       );
       if (match?.urls?.[0]) {
-        return `http://142.93.171.166/${match.urls[0]}`;
+        return `http://142.93.171.166/uploads/${match.urls[0]}`;
       }
 
       const fallback = product.images.find(img => img.urls?.[0]);
       if (fallback) {
-        return `http://142.93.171.166/${fallback.urls[0]}`;
+        return `http://142.93.171.166/uploads/${fallback.urls[0]}`;
       }
     }
 
@@ -141,7 +141,7 @@ const AllProducts = () => {
     if (typeof firstItem === 'object') {
       const match = product.images.find(img => img.color?.toLowerCase() === color?.toLowerCase());
       if (match?.urls?.[1]) {
-        return `http://142.93.171.166/${match.urls[1]}`;
+        return `http://142.93.171.166/uploads/${match.urls[1]}`;
       }
     }
     return '';

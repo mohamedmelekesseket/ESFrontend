@@ -386,7 +386,6 @@ function HeaderBar({showBag,setShowBag}   ) {
   ];
   return (
     <div>
-
       <AnimatePresence>
         {showBag && (
           <motion.div

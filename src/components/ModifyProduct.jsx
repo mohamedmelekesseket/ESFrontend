@@ -303,7 +303,7 @@ const ModifyProduct = ({id,setModify}) => {
                       onClick={() => removeColorImage(color, idx, true)}
                     />
                     <img
-                      src={`http://142.93.171.166/${url}`}
+                      src={`http://142.93.171.166/uploads/${url}`}
                       alt={`${color} ${idx}`}
                       style={{
                         width: "160px",
