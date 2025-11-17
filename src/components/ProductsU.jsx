@@ -558,6 +558,7 @@ const Index = () => {
                 <span className="coming-soon">Coming Soon</span>
               </div>
             </div>
+            <h1  style={{fontSize:"17px",color:"#343633",textAlign:"center"}}>You might be interested in</h1>
             <div className='SearchMobileProductS'>
               {products.map((prod, index) => (
                 <div

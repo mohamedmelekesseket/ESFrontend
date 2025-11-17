@@ -149,7 +149,7 @@ const CategroiesBord = () => {
   const deleteUser = async (id) => {
     toast((t) => (
       <div style={{ display: "flex", flexDirection: "column", gap: "10px", backgroundColor: "white" }}>
-        <p>Are you sure you want to delete this SubCategor?</p>
+        <p>Are you sure you want to delete this SubCategory?</p>
         <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
           <button
             onClick={() => confirmDelete(id, t.id)}
@@ -170,24 +170,73 @@ const CategroiesBord = () => {
 
   const confirmDelete = async (id, toastId) => {
     try {
-      // TODO: Replace hardcoded API URL with environment variable for production
-      const res = await axios.delete(`https://esseket.duckdns.org/api/Admin/Delete-SubCategory/${id}`,{
-        headers: {
-          'Authorization': `Bearer ${user.token}`
-          }
-      });
+      const res = await axios.delete(
+        `https://esseket.duckdns.org/api/Admin/Delete-SubCategory/${id}`,
+        { headers: { 'Authorization': `Bearer ${user.token}` } }
+      );
+
       if (res.status === 200) {
         toast.dismiss(toastId);
         toast.success("SubCategory deleted successfully!");
-        getSubCategory();
+        console.log(res);
+        
+        // FIXED:
+        getSubCategory(categoryId);
       }
     } catch (error) {
       console.error(error);
-      if (error.response?.status !== 200) {
-        toast.error(error.response?.data?.message || 'Server error occurred');
-      }
+      toast.error(error.response?.data?.message || 'Server error occurred');
     }
   };
+
+  const deleteCategory = (id) => {
+    if (!id) {
+      toast.error("Invalid category ID");
+      return;
+    }
+
+    const toastId = toast((t) => (
+      <div style={{ display: "flex", flexDirection: "column", gap: "10px", backgroundColor: "white" }}>
+        <p>Are you sure you want to delete this Category?</p>
+        <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
+          <button
+            onClick={() => confirmDeleteCategory(id, t.id)}
+            style={{ background: "red", color: "white", padding: "5px 10px", border: "none", borderRadius: "5px", cursor: "pointer" }}
+          >
+            Yes
+          </button>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            style={{ background: "gray", color: "white", padding: "5px 10px", border: "none", borderRadius: "5px", cursor: "pointer" }}
+          >
+            No
+          </button>
+        </div>
+      </div>
+    ), { duration: 5000 });
+  };
+
+
+  const confirmDeleteCategory = async (id, toastId) => {
+
+
+    try {
+      const res = await axios.delete(`https://esseket.duckdns.org/api/Admin/Delete-category/${id}`,
+        { headers: { 'Authorization': `Bearer ${user.token}` } }
+      );
+      if (res.status === 200) {
+        toast.dismiss(toastId);
+        toast.success("Category deleted successfully!");
+        getCategory(); // Refresh the list
+      }
+    } catch (error) {
+      console.error(error);
+      toast.dismiss(toastId);
+      toast.error(error.response?.data?.message || 'Server error occurred');
+    }
+  };
+
+
   return (
     <div className='CategroiesDashBord'>
       <Toaster/>
@@ -273,8 +322,18 @@ const CategroiesBord = () => {
             <div key={category._id} className='categorie'>
               <div style={{width:"80%",height:"100%",}}>
                 <h3>{category.name}</h3>
-                <button className='viewSub' onClick={()=>(getSubCategory(category._id),SetShowSub(true),setIdCategory(category._id),setName(category.name))}>View Subcategories</button>
               </div>
+                <div style={{display:"flex",gap:"6%",width:"100%"}}>
+                  <button className='viewSub' onClick={()=>(getSubCategory(category._id),SetShowSub(true),setIdCategory(category._id),setName(category.name))}>View Subcategories</button>
+                  <Trash2 
+                    onClick={() => {
+                      console.log("Attempting to delete category:", category._id);
+                      deleteCategory(category._id);
+                    }} 
+                    style={{color:"red",position:"absolute",cursor:"pointer",right:"5px",bottom:"5px"}} 
+                    size={15}
+                  />
+                </div>
             </div>)}
           </div>)
       }

@@ -453,7 +453,20 @@ function HeaderBar({showBag,setShowBag}   ) {
                 {Allsubcategories.map((subcategory, index) => (
                   <h4
                     key={subcategory._id || index}
-                    onClick={() => setSearchGenre(subcategory.genre || 'Homme')}
+                    onClick={() => {
+                    navigate(
+                      `/ProductU/${subcategory.name}?subcategoryId=${subcategory._id}&genre=${genre}`,
+                      {
+                        state: {
+                          parentCategoryId: subcategory.categoryId,
+                          subcategoryId: subcategory._id,
+                          genre: subcategory.genre,
+                        },
+                      }
+                    );
+                    setSearchMobile(false);
+                  }}
+
                     style={{
                       flex: '0 0 auto',
                       minWidth: '100px',
@@ -629,7 +642,7 @@ function HeaderBar({showBag,setShowBag}   ) {
                   <User  onClick={()=>(setShowMenu(false),setShowUser(!ShowUser),setIsDropdownOpen(true),setShowBag(false))} style={{cursor:"pointer",color:"white"}}/> 
                 ):(
                   <Link to='/Seconnect'onClick={()=>(setShowMenu(false),setShowBag(false))}>
-                  <button >Se Connect <UserRound size={15} style={{position:"relative",left:"5px",top:"2px"}}/></button>
+                  <button >Sign In <UserRound size={15} style={{position:"relative",left:"5px",top:"2px"}}/></button>
                   </Link>
                 )}
               </div>
