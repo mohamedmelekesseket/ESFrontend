@@ -210,7 +210,7 @@ const sendMail = async () => {
               key={prod._id}
               className="selectCard"
               style={{
-                backgroundImage: `url("https://esseket.duckdns.org/${imagePath}")`,
+                backgroundImage: `url("https://esseket.duckdns.org/uploads/${imagePath}")`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 width: getCardWidth(index),

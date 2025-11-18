@@ -617,7 +617,7 @@ function HeaderBar({showBag,setShowBag}   ) {
                     setShowSearch(false);
                   }}
                 >
-                  <img src={`https://esseket.duckdns.org/${prod.images[0]?.urls[3]}`} alt="" />
+                  <img src={`https://esseket.duckdns.org/uploads/${prod.images[0]?.urls[3]}`} alt="" />
                   <h2>{prod.name}</h2>
                   <h3>{prod.price} TND</h3>
                 </div>
