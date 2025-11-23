@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import ChangeComp from './ChangeComp'
 import { Instagram,Shirt,X ,Smartphone,CircleCheckBig ,Youtube,Twitter,BookOpen,Trophy,Mail,MapPin,Phone,Clock ,ArrowRight} from 'lucide-react';
-import product2 from '../images/product-32-0.png'
+import product2 from '../images/chaus.png'
 import Accessories from '../images/stoush.jpg'
-import veste from '../images/vetment/product-28-3.jpg.png'
+import veste from '../images/vest.png'
 import pontalon from '../images/vetment/pontalon-6-0.png'
 import Hoodiessoon from '../images/houdies.png'
 import { Link, useNavigate } from 'react-router-dom';
@@ -64,7 +64,6 @@ const isValid = () => {
 const isNumber = (value) => /^\d+(\.\d+)?$/.test(value); // Optional decimal
 
 const sendMail = async () => {
-  console.log(phone, email, message, subject);
 
   if (!isValid()) {
     toast.error("All fields are required");
@@ -100,10 +99,8 @@ const sendMail = async () => {
     if (res.status === 200) {
       toast.success("Message sent successfully ✅");
       setShowContact(false)
-      console.log("Message sent successfully");
     }
   } catch (error) {
-    console.error("Error sending message:", error);
     toast.error("Failed to send message ❌");
   }
 };
@@ -203,14 +200,17 @@ const sendMail = async () => {
 
         {Products.slice(0, 5).map((prod, index) => {
           // ✅ FIX only this line
-          const imagePath = prod?.images?.[0]?.urls?.[0]?.replace(/\\/g, "/");
+
+
+          const imagePath = prod?.images?.[0]?.urls?.[0] || "";
 
           return (
             <div 
               key={prod._id}
               className="selectCard"
               style={{
-                backgroundImage: `url("https://esseket.duckdns.org/uploads/${imagePath}")`,
+
+                backgroundImage: `url("https://esseket.duckdns.org/${imagePath}")`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 width: getCardWidth(index),
@@ -332,22 +332,42 @@ const sendMail = async () => {
       <div className='Featured'>
         <h1>Featured Collection</h1>
         <p>Explore our carefully curated selection of premium streetwear and contemporary fashion</p>
-        <div className='FeaturedProductCards'>
-          {Products.slice(0, 5).map((prod, index) => 
-          <div className='FeaturedProductCard' onClick={() => (navigate(`/PorductSelecte/${prod._id}`, {
-                state: {
-                  parentCategoryId: prod.categoryId,
-                  subcategoryId: prod.subcategoryId,
-                  genre: prod.genre,
-                }
-              }))}>
-            <img src={`https://esseket.duckdns.org/${prod.images[0]?.urls[3]}`} alt="" />
-            <h2>{prod.name}</h2>
-            <h3>{prod.price} TND</h3>
+        
+        <div className="FeaturedProductCards">
+          {Products.slice(0, 5).map((prod, index) => {
+            // Get raw image path
+            const rawPath = prod.images[0]?.urls[3] || "";
 
-          </div>
-          )}
+            // Normalize slashes and remove "server/" prefix if present
+            let normalizedPath = rawPath.replace(/\\/g, "/").replace(/^server\//, "");
+
+            // Ensure it starts with "uploads/"
+            if (!normalizedPath.startsWith("uploads/")) {
+              normalizedPath = "uploads/" + normalizedPath;
+            }
+
+            return (
+              <div
+                key={prod._id}
+                className="FeaturedProductCard"
+                onClick={() =>
+                  navigate(`/PorductSelecte/${prod._id}`, {
+                    state: {
+                      parentCategoryId: prod.categoryId,
+                      subcategoryId: prod.subcategoryId,
+                      genre: prod.genre,
+                    },
+                  })
+                }
+              >
+                <img src={`https://esseket.duckdns.org/${normalizedPath}`} alt={prod.name} />
+                <h2>{prod.name}</h2>
+                <h3>{prod.price} TND</h3>
+              </div>
+            );
+          })}
         </div>
+
       </div>
 
       {/* About Section */}

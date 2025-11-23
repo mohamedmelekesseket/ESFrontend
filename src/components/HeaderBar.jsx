@@ -206,14 +206,31 @@ function HeaderBar({showBag,setShowBag}   ) {
       }
     }
   };
-  const getSafeImageUrl = (imagePath) => {
-    if (!imagePath) return '';
-    // Normalize the path to use forward slashes
-    let normalizedPath = imagePath.replace(/\\/g, '/');
-    return normalizedPath.startsWith('https')
-      ? normalizedPath
-      : `https://esseket.duckdns.org/${normalizedPath.replace(/^\//, '')}`;
-  };
+ const getSafeImageUrl = (imagePath) => {
+  if (!imagePath) return '';
+  
+  // If it's already a full URL, return it as is
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath;
+  }
+  
+  // Normalize the path to use forward slashes
+  let normalizedPath = imagePath.replace(/\\/g, '/');
+  
+  // ✅ CRITICAL: Remove 'server/' prefix (database stores 'server/uploads/...' but files are in 'uploads/')
+  normalizedPath = normalizedPath.replace(/^server\//, '');
+  
+  // Remove leading slashes
+  normalizedPath = normalizedPath.replace(/^\/+/, '');
+  
+  // If path doesn't start with "uploads/", add it
+  if (!normalizedPath.startsWith('uploads/')) {
+    normalizedPath = 'uploads/' + normalizedPath;
+  }
+  
+  // Return the full URL
+  return `https://esseket.duckdns.org/${normalizedPath}`;
+};
 
   const getImageByColor = (product, color, index = 0) => {
     if (!product?.images?.length) {
@@ -248,6 +265,7 @@ function HeaderBar({showBag,setShowBag}   ) {
   }, []);
   useEffect(() => {
     getProductCart();
+    
   }, [showBag, user?.id]);
   useEffect(() => {
     getProducts()
@@ -277,7 +295,6 @@ function HeaderBar({showBag,setShowBag}   ) {
   useEffect(() => {
     if (product && selectedColor) {
       const newImage = getImageByColor(product, selectedColor);
-      console.log('Setting new image:', newImage);
       setImage(newImage);
     }
   }, [selectedColor, product]);
@@ -492,20 +509,23 @@ function HeaderBar({showBag,setShowBag}   ) {
             <h1>You might be interested in</h1>
 
             <div className='SearchMobileProductS'>
-              {AllProducts.map((prod, index) => 
-                <div key={prod._id || index} id='FeaturedProductCard'  className='FeaturedProductCard'
-                onClick={()=>(navigate(`/PorductSelecte/${prod._id}`, {
-                state: {
-                  parentCategoryId: prod.categoryId,
-                  subcategoryId: prod.subcategoryId,
-                  genre: prod.genre,
-                }}),setSearchMobile(false))}>
-                  <img src={`https://esseket.duckdns.org/${prod.images[0]?.urls[3]}`} alt="" />
-                  <h2>{prod.name}</h2>
-                  <h3>{prod.price} TND</h3>
-
-                </div>
-              )}
+              {AllProducts.map((prod, index) => {
+                // Add this debug
+                
+                return (
+                  <div key={prod._id || index} id='FeaturedProductCard' className='FeaturedProductCard'
+                    onClick={()=>(navigate(`/PorductSelecte/${prod._id}`, {
+                      state: {
+                        parentCategoryId: prod.categoryId,
+                        subcategoryId: prod.subcategoryId,
+                        genre: prod.genre,
+                      }}),setSearchMobile(false))}>
+                    <img src={`https://esseket.duckdns.org/${prod.images[0]?.urls[3]}`} alt="" />
+                    <h2>{prod.name}</h2>
+                    <h3>{prod.price} TND</h3>
+                  </div>
+                )
+              })}
             </div>
         </div>  
       )}
@@ -601,27 +621,41 @@ function HeaderBar({showBag,setShowBag}   ) {
             }}>You might be interested in</h1>
 
             <div className='SearchMobileProductS'>
-              {filteredProducts.map((prod, index) => 
-                <div 
-                  key={prod._id || index} 
-                  id='FeaturedProductCard'  
-                  className='FeaturedProductCard'
-                  onClick={()=>{
-                    navigate(`/PorductSelecte/${prod._id}`, {
+              {AllProducts.map((prod, index) => {
+                const rawImagePath = prod.images?.[0]?.urls?.[3];
+                const imageUrl = rawImagePath ? getSafeImageUrl(rawImagePath) : '';
+                
+                // Debug logging
+
+                
+                return (
+                  <div key={prod._id || index} id='FeaturedProductCard' className='FeaturedProductCard'
+                    onClick={()=>(navigate(`/PorductSelecte/${prod._id}`, {
                       state: {
                         parentCategoryId: prod.categoryId,
                         subcategoryId: prod.subcategoryId,
                         genre: prod.genre,
-                      }
-                    });
-                    setShowSearch(false);
-                  }}
-                >
-                  <img src={`https://esseket.duckdns.org/uploads/${prod.images[0]?.urls[3]}`} alt="" />
-                  <h2>{prod.name}</h2>
-                  <h3>{prod.price} TND</h3>
-                </div>
-              )}
+                      }}),setSearchMobile(false))}>
+                    {imageUrl ? (
+                      <img 
+                        src={imageUrl} 
+                        alt={prod.name}
+                        onError={(e) => {
+                          console.error('Image failed to load:', imageUrl);
+                          console.error('Product:', prod.name);
+                          e.target.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="200" height="200"%3E%3Crect fill="%23ddd" width="200" height="200"/%3E%3Ctext x="50%25" y="50%25" text-anchor="middle" fill="%23999"%3ENo Image%3C/text%3E%3C/svg%3E';
+                        }}
+                      />
+                    ) : (
+                      <div style={{width: '100%', height: '200px', backgroundColor: '#f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#999'}}>
+                        No Image
+                      </div>
+                    )}
+                    <h2>{prod.name}</h2>
+                    <h3>{prod.price} TND</h3>
+                  </div>
+                )
+              })}
             </div>
           </>
         )}
@@ -633,7 +667,7 @@ function HeaderBar({showBag,setShowBag}   ) {
           <Menu className='IconMenuHead' onClick={()=>(setShowMenu(!showMenu),setShowUser(false),setShowBag(false))} size={25} strokeWidth={3} style={{color:"white",cursor:"pointer",backgroundColor:"transparent"}}/>
           {/* <Menu className='IconMenuHead' onClick={()=>(setShowMenu(!showMenu),setShowUser(false),setShowBag(false))} size={45} strokeWidth={3} style={{color:"white",cursor:"pointer"}}/> */}
           <Link className='esLogoHead'  to='/' style={{textDecoration:"none",color:"white"}}>
-            <img src={EsL} onClick={()=>(setShowMenu(false),setShowBag(false))} width={'70px'} height={'70px'}  alt="" />
+            <img src={EsL} onClick={()=>(setShowMenu(false),setShowBag(false))}   alt="" />
           </Link>
           <div className='HeaderBar-3'> 
             <div className='HeaderIcons'>
@@ -926,19 +960,19 @@ function HeaderBar({showBag,setShowBag}   ) {
           )}
         </AnimatePresence>
         <AnimatePresence>
-          {showBagEdit && (
-            <motion.div
-              className={`ShoppingBag-Edit ${showBagEdit ? 'open' : ''}`}
-              initial={{ width: 0, opacity: 0, x: 100 }}
-              animate={{ width: "29%", opacity: 1, x: 0 }}
-              exit={{ width: 0, opacity: 0, x: 100 }}
-              transition={{
-                width: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
-                opacity: { duration: 0.3, ease: "easeOut" },
-                x: { duration: 0.4, ease: [0.4, 0, 0.2, 1] }
-              }}
-              style={{ overflow: "hidden" }}
-            >
+        {showBagEdit && (
+          <motion.div
+            className={`ShoppingBag-Edit ${showBagEdit ? 'open' : ''}`}
+            initial={{ opacity: 0, x: 100 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 100 }}
+            transition={{
+              opacity: { duration: 0.3, ease: "easeOut" },
+              x: { duration: 0.4, ease: [0.4, 0, 0.2, 1] }
+            }}
+            style={{ overflow: "hidden" }}
+          >
+
           <X onClick={() => {
             setShowBagEdit(false);
             setEditingCartItem(null);

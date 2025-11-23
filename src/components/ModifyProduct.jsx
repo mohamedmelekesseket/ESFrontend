@@ -282,6 +282,31 @@ const ModifyProduct = ({id,setModify}) => {
     );
   }
 
+  const getSafeImageUrl = (imagePath) => {
+    if (!imagePath) return '';
+
+    // If it's already a full URL, return it
+    if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+      return imagePath;
+    }
+
+    // Normalize slashes
+    let normalizedPath = imagePath.replace(/\\/g, '/');
+
+    // Remove 'server/' prefix if present
+    normalizedPath = normalizedPath.replace(/^server\//, '');
+
+    // Remove leading slashes
+    normalizedPath = normalizedPath.replace(/^\/+/, '');
+
+    // Ensure path starts with 'uploads/'
+    if (!normalizedPath.startsWith('uploads/')) {
+      normalizedPath = 'uploads/' + normalizedPath;
+    }
+
+    return `https://esseket.duckdns.org/${normalizedPath}`;
+  };
+
   return (
     <div className='AddProduct'>
       <Toaster />
@@ -295,15 +320,19 @@ const ModifyProduct = ({id,setModify}) => {
           return (
             <>
               {/* Existing Images */}
+              
               {Object.entries(existingColorImages).map(([color, urls]) =>
                 urls.map((url, idx) => (
-                  <div key={`existing-${color}-${idx}`} style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                    <X 
-                      style={{color:"white",position:"relative",left:"40%", cursor: "pointer"}}
+                  <div
+                    key={`existing-${color}-${idx}`}
+                    style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+                  >
+                    <X
+                      style={{ color: "white", position: "relative", left: "40%", cursor: "pointer" }}
                       onClick={() => removeColorImage(color, idx, true)}
                     />
                     <img
-                      src={`https://esseket.duckdns.org/uploads/${url}`}
+                      src={getSafeImageUrl(url)}
                       alt={`${color} ${idx}`}
                       style={{
                         width: "160px",
@@ -314,10 +343,11 @@ const ModifyProduct = ({id,setModify}) => {
                         marginBottom: "4px"
                       }}
                     />
-                    <span style={{ fontSize: "10px", color:"white" }}>{color}</span>
-        </div>
+                    <span style={{ fontSize: "10px", color: "white" }}>{color}</span>
+                  </div>
                 ))
               )}
+
               
               {/* New Images */}
               {Object.entries(colorImages).map(([color, files]) =>

@@ -147,8 +147,9 @@ const getProductCart = async () => {
   }
 };
 const handleOrder = async () => {
-  console.log(user.id);
-  
+  if (!nom || !prenom || !email || !telephone || !rue || !complement || !ville || !province || !postal) {
+    return     toast.error('Information non complet');
+  }  
   try {
     const res = await axios.post(
       `https://esseket.duckdns.org/api/create-order/${user.id}`,

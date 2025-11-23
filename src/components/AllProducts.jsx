@@ -107,45 +107,74 @@ const AllProducts = () => {
     setFilteredProducts(filtered);
   }, [Products, selectedCategory, selectedSubCategory, selectedGenre]);
 
-  const getImageByColor = (product, color) => {
-    if (!product?.images?.length) return '';
+const getSafeImageUrl = (imagePath) => {
+  if (!imagePath) return '';
 
-    const firstItem = product.images[0];
+  // If it's already a full URL, return it
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath;
+  }
 
-    // Case 1: images are just file paths
-    if (typeof firstItem === 'string') {
-      return `https://esseket.duckdns.org/${firstItem}`;
+  // Normalize slashes
+  let normalizedPath = imagePath.replace(/\\/g, '/');
+
+  // Remove 'server/' prefix if present
+  normalizedPath = normalizedPath.replace(/^server\//, '');
+
+  // Remove leading slashes
+  normalizedPath = normalizedPath.replace(/^\/+/, '');
+
+  // Ensure path starts with 'uploads/'
+  if (!normalizedPath.startsWith('uploads/')) {
+    normalizedPath = 'uploads/' + normalizedPath;
+  }
+
+  // Return full URL
+  return `https://esseket.duckdns.org/${normalizedPath}`;
+};
+
+
+const getImageByColor = (product, color) => {
+  if (!product?.images?.length) return '';
+
+  const firstItem = product.images[0];
+
+  if (typeof firstItem === 'string') {
+    return getSafeImageUrl(firstItem);
+  }
+
+  if (typeof firstItem === 'object') {
+    const match = product.images.find(img =>
+      img.color?.toLowerCase() === color?.toLowerCase()
+    );
+    if (match?.urls?.[0]) {
+      return getSafeImageUrl(match.urls[0]);
     }
 
-    // Case 2: images are objects with color & urls
-    if (typeof firstItem === 'object') {
-      const match = product.images.find(img =>
-        img.color?.toLowerCase() === color?.toLowerCase()
-      );
-      if (match?.urls?.[0]) {
-        return `https://esseket.duckdns.org/${match.urls[0]}`;
-      }
-
-      const fallback = product.images.find(img => img.urls?.[0]);
-      if (fallback) {
-        return `https://esseket.duckdns.org/${fallback.urls[0]}`;
-      }
+    const fallback = product.images.find(img => img.urls?.[0]);
+    if (fallback) {
+      return getSafeImageUrl(fallback.urls[0]);
     }
+  }
 
-    return '';
-  };
+  return '';
+};
 
-  const getSecondImageByColor = (product, color) => {
-    if (!product?.images?.length) return '';
-    const firstItem = product.images[0];
-    if (typeof firstItem === 'object') {
-      const match = product.images.find(img => img.color?.toLowerCase() === color?.toLowerCase());
-      if (match?.urls?.[1]) {
-        return `https://esseket.duckdns.org/${match.urls[1]}`;
-      }
+
+
+const getSecondImageByColor = (product, color) => {
+  if (!product?.images?.length) return '';
+  const firstItem = product.images[0];
+  if (typeof firstItem === 'object') {
+    const match = product.images.find(img =>
+      img.color?.toLowerCase() === color?.toLowerCase()
+    );
+    if (match?.urls?.[1]) {
+      return getSafeImageUrl(match.urls[1]);
     }
-    return '';
-  };
+  }
+  return '';
+};
 
   return (
     <div className='AllProduct'>
