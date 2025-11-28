@@ -1,8 +1,8 @@
 import React,{useState,useEffect,useMemo} from 'react'
-import back1 from '../images/es.png'
-import back2 from '../images/bachome.jpg'
-import back4 from '../images/sd.jpg'
-import back3 from '../images/unsplash.jpg'
+import back1 from '../images/hero-6.jpg'
+import back2 from '../images/hero-4.jpg'
+import back4 from '../images/hero-2.jpg'
+import back3 from '../images/hero-5.jpg'
 import EsL from '../images/Es4.png'
 import { Menu,UserRound,Smartphone,Footprints ,Shirt ,X ,LogOut,User,Mail, CreditCard, ArrowLeft ,Truck, MapPin,ShoppingBag,ShieldUser,Edit2,Trash2 ,Dot,MoveRight,MoveLeft   } from 'lucide-react';
 import { Link, useNavigate,useLocation  } from 'react-router-dom';

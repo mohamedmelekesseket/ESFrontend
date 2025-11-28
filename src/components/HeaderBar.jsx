@@ -590,7 +590,19 @@ function HeaderBar({showBag,setShowBag}   ) {
                 {filteredSubcategory.map((subcategory, index) => (
                   <h4
                     key={subcategory._id || index}
-                    onClick={() => setSearchGenre(subcategory.genre || 'Homme')}
+                    onClick={() => {
+                    navigate(
+                      `/ProductU/${subcategory.name}?subcategoryId=${subcategory._id}&genre=${genre}`,
+                      {
+                        state: {
+                          parentCategoryId: subcategory.categoryId,
+                          subcategoryId: subcategory._id,
+                          genre: subcategory.genre,
+                        },
+                      }
+                    );
+                    setShowSearch(false);
+                  }}
                     style={{
                       flex: '0 0 auto',
                       minWidth: '100px',
@@ -635,7 +647,7 @@ function HeaderBar({showBag,setShowBag}   ) {
                         parentCategoryId: prod.categoryId,
                         subcategoryId: prod.subcategoryId,
                         genre: prod.genre,
-                      }}),setSearchMobile(false))}>
+                      }}),setShowSearch (false))}>
                     {imageUrl ? (
                       <img 
                         src={imageUrl} 

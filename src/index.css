@@ -2981,7 +2981,8 @@ textarea::placeholder {
 .facturation-2 {
   flex: 1 1 30%;
   padding: 20px;
-  background-color: #f5f5f5;
+  background-color: #000000;
+  color: white;
   border-left: 1px solid #ddd;
   border-radius: 10px;
   display: block;
