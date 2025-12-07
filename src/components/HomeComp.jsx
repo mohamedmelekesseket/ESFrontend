@@ -12,7 +12,7 @@ import vd from '../images/vd.mp4'
 
 import axios from 'axios'
 
-const DROP_DATE = new Date('2025-12-01T00:00:00Z')
+const DROP_DATE = new Date('2025-12-30T00:00:00Z')
 
 const HomeComp = () => {
   const [selectedCard, setSelectedCard] = useState(null);
