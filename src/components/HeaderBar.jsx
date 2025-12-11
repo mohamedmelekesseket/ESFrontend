@@ -7,6 +7,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import EsL from '../images/Es4.png'
 
 import axios from 'axios'
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 function HeaderBar({showBag,setShowBag}   ) {
   const [categorySelected,setCategorySelected]=useState('')
   const [categorySelectedName,setCategorySelectedName]=useState('')
@@ -95,7 +98,7 @@ function HeaderBar({showBag,setShowBag}   ) {
   
   const getProducts = async () => {
     try {
-      const res = await axios.get("https://esseket.duckdns.org/api/GetProduct");
+      const res = await axios.get(`${API_BASE_URL}/GetProduct`);
       setAllProducts(res.data)
        const featuredProducts = res.data
         .filter(p => p.isFeatured)
@@ -110,7 +113,7 @@ function HeaderBar({showBag,setShowBag}   ) {
   };
   const getCategory = async () => {  
     try {
-      const res = await axios.get("https://esseket.duckdns.org/api/Admin/Get-category",{
+      const res = await axios.get(`${API_BASE_URL}/Admin/Get-category`,{
       });
       setCategories(res.data);            
     } catch (error) {
@@ -128,7 +131,7 @@ function HeaderBar({showBag,setShowBag}   ) {
   const getProductCart = async () => {  
     if (!user?.id) return;
     try {
-      const res = await axios.get(`https://esseket.duckdns.org/api/GetProductCart/${user.id}`, {
+      const res = await axios.get(`${API_BASE_URL}/GetProductCart/${user.id}`, {
         headers: {
           'Authorization': `Bearer ${user.token}`,
           'Content-Type': 'application/json'
@@ -142,7 +145,7 @@ function HeaderBar({showBag,setShowBag}   ) {
   };
   const getAllSubCategory = async (id) => {  
     try {
-      const res = await axios.get(`https://esseket.duckdns.org/api/getAllSubCategory`);
+      const res = await axios.get(`${API_BASE_URL}/getAllSubCategory`);
       setAllSubcategories(res.data);     
        
     } catch (error) {
@@ -154,7 +157,7 @@ function HeaderBar({showBag,setShowBag}   ) {
   };
   const getSubCategory = async (id) => {  
     try {
-      const res = await axios.get(`https://esseket.duckdns.org/api/Admin/Get-Subcategory/${id}`);
+      const res = await axios.get(`${API_BASE_URL}/Admin/Get-Subcategory/${id}`);
       setSubcategories(res.data);     
        
     } catch (error) {
@@ -176,7 +179,7 @@ function HeaderBar({showBag,setShowBag}   ) {
   const GetPById = async (id) => {  
     
     try {
-      const res = await axios.get(`https://esseket.duckdns.org/api/Admin/Get-product/${id}`);     
+      const res = await axios.get(`${API_BASE_URL}/Admin/Get-product/${id}`);     
       setName(res.data.name)
       setProduct(res.data)  
       // console.log('Product data:', res.data);
@@ -337,7 +340,7 @@ function HeaderBar({showBag,setShowBag}   ) {
   const DeletePrdCart = async (productToDelete) => {
     if (!user?.id) return;
     try {
-      const res = await axios.delete('https://esseket.duckdns.org/api/DeletePrdCart', {
+      const res = await axios.delete(`${API_BASE_URL}/DeletePrdCart`, {
         data: {
           userId: user.id,
           productId: productToDelete.productId._id,
@@ -360,7 +363,7 @@ function HeaderBar({showBag,setShowBag}   ) {
   const updateCartItem = async () => {
     if (!user?.id || !editingCartItem) return;
     try {
-      const res = await axios.put('https://esseket.duckdns.org/api/cart-update', {
+      const res = await axios.put(`${API_BASE_URL}/cart-update`, {
           userId: user.id,
           cartItemId: editingCartItem._id, // Send the cart item ID for reliable lookup
           productId: product._id,

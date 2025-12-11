@@ -5,6 +5,8 @@ import axios from 'axios'
 import toast, { Toaster } from "react-hot-toast";
 import { ScaleLoader } from "react-spinners"; // Import ScaleLoader
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const UserBord = () => {
   const [role, setRole] = useState(''); 
   const [searchTerm, setSearchTerm] = useState(""); // State for search input
@@ -18,7 +20,7 @@ const UserBord = () => {
     const getUser = async () => {  
     try {
       // TODO: Replace hardcoded API URL with environment variable for production
-      const res = await axios.get("https://esseket.duckdns.org/api/Owner/getUser  ",{
+      const res = await axios.get(`${API_BASE_URL}/Owner/getUser`,{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -42,7 +44,7 @@ const UserBord = () => {
           return toast.error('select new role or close')
         }
       // TODO: Replace hardcoded API URL with environment variable for production
-      const res = await axios.put(`https://esseket.duckdns.org/api/Owner/Update-User/${id}` ,{
+      const res = await axios.put(`${API_BASE_URL}/Owner/Update-User/${id}` ,{
         role
       },{
         headers: {
@@ -89,7 +91,7 @@ const UserBord = () => {
   const confirmDelete = async (id, toastId) => {
     try {
       // TODO: Replace hardcoded API URL with environment variable for production
-      const res = await axios.delete(`https://esseket.duckdns.org/api/Owner/DeleteUser/${id}`,{
+      const res = await axios.delete(`${API_BASE_URL}/Owner/DeleteUser/${id}`,{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }

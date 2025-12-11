@@ -3,6 +3,8 @@ import { Eye , SquareArrowRight,Trash2 } from 'lucide-react';
 import toast, { Toaster } from 'react-hot-toast';
 import { ScaleLoader } from "react-spinners"; // Import ScaleLoader
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 import axios from 'axios'
 const CategroiesBord = () => {
   const [images, setImages] = useState([]);
@@ -44,15 +46,13 @@ const CategroiesBord = () => {
       formadata.append('images',image)
     })
     try {
-      const res= await axios.post('https://esseket.duckdns.org/api/Admin/Add-category',
-        formadata,
-        {
+      
+        const res = await axios.post(`${API_BASE_URL}/Admin/Add-Category`, formadata, {
           headers: {
-            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${user.token}`,
           },
-        }
-      )
+        });
+
       if (res.status === 200) {
         toast.success("Category Created successfully")
         SetShowModal(false)
@@ -84,11 +84,10 @@ const CategroiesBord = () => {
       })
       }
     try {
-      const res= await axios.post('https://esseket.duckdns.org/api/Admin/Add-CategorySub',
+      const res= await axios.post(`${API_BASE_URL}/Admin/Add-CategorySub`,
         formadata,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${user.token}`,
           },
         }
@@ -111,7 +110,7 @@ const CategroiesBord = () => {
   }
     const getCategory = async () => {  
     try {
-      const res = await axios.get("https://esseket.duckdns.org/api/Admin/Get-category",{
+      const res = await axios.get(`${API_BASE_URL}/Admin/Get-category`,{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -128,7 +127,7 @@ const CategroiesBord = () => {
   };
     const getSubCategory = async (id) => {  
     try {
-      const res = await axios.get(`https://esseket.duckdns.org/api/Admin/Get-Subcategory/${id}`,{
+      const res = await axios.get(`${API_BASE_URL}/Admin/Get-Subcategory/${id}`,{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -171,7 +170,7 @@ const CategroiesBord = () => {
   const confirmDelete = async (id, toastId) => {
     try {
       const res = await axios.delete(
-        `https://esseket.duckdns.org/api/Admin/Delete-SubCategory/${id}`,
+        `${API_BASE_URL}/Admin/Delete-SubCategory/${id}`,
         { headers: { 'Authorization': `Bearer ${user.token}` } }
       );
 
@@ -221,7 +220,7 @@ const CategroiesBord = () => {
 
 
     try {
-      const res = await axios.delete(`https://esseket.duckdns.org/api/Admin/Delete-category/${id}`,
+      const res = await axios.delete(`${API_BASE_URL}/Admin/Delete-category/${id}`,
         { headers: { 'Authorization': `Bearer ${user.token}` } }
       );
       if (res.status === 200) {

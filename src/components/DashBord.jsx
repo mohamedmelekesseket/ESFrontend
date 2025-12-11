@@ -4,6 +4,9 @@ import userI from '../images/user.png'
 import { Link, Outlet } from 'react-router-dom';
 import axios from "axios";
 import {BeatLoader } from 'react-spinner'
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const DashBord = () => {
     const [Message, setMessage] = useState([]);
     const [selecteMenu, setSelecteMenu] = useState(() => localStorage.getItem('selecteMenu') || 'Dashbord');
@@ -19,7 +22,7 @@ const DashBord = () => {
   
     const getMessage = async () => {  
     try {
-      const res = await axios.get("https://esseket.duckdns.org/api/Owner/getMessage",{
+      const res = await axios.get(`${API_BASE_URL}/Owner/getMessage`,{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -42,7 +45,7 @@ const DashBord = () => {
     const getUser = async () => {  
     try {
       // TODO: Replace hardcoded API URL with environment variable for production
-      const res = await axios.get("https://esseket.duckdns.org/api/Owner/getUser  ",{
+      const res = await axios.get(`${API_BASE_URL}/Owner/getUser  `,{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -58,7 +61,7 @@ const DashBord = () => {
   };
     const getCategory = async () => {  
     try {
-      const res = await axios.get("https://esseket.duckdns.org/api/Admin/Get-category",{
+      const res = await axios.get(`${API_BASE_URL}/Admin/Get-category`,{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -74,7 +77,7 @@ const DashBord = () => {
   };
   const getProducts = async () => {
     try {
-      const res = await axios.get("https://esseket.duckdns.org/api/Admin/Get-products", {
+      const res = await axios.get(`${API_BASE_URL}/Admin/Get-products`, {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
       setProducts(res.data);

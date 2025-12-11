@@ -4,6 +4,8 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import ModifyProduct from './ModifyProduct';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const AllProducts = () => {
   const [selectedCategory, setSelectedCategory] = useState('');
   const [selectedGenre, setSelectedGenre] = useState('');
@@ -21,7 +23,7 @@ const AllProducts = () => {
 
   const getCategory = async () => {
     try {
-      const res = await axios.get("https://esseket.duckdns.org/api/Admin/Get-category", {
+      const res = await axios.get(`${API_BASE_URL}/Admin/Get-category`, {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
       setCategorys(res.data);
@@ -32,7 +34,7 @@ const AllProducts = () => {
 
   const getSubCategory = async (id) => {
     try {
-      const res = await axios.get(`https://esseket.duckdns.org/api/Admin/Get-Subcategory/${id}`, {
+      const res = await axios.get(`${API_BASE_URL}/Admin/Get-Subcategory/${id}`, {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
       setSubCategorys(res.data);
@@ -43,7 +45,7 @@ const AllProducts = () => {
 
   const getProducts = async () => {
     try {
-      const res = await axios.get("https://esseket.duckdns.org/api/Admin/Get-products", {
+      const res = await axios.get(`${API_BASE_URL}/Admin/Get-products`, {
         headers: { 'Authorization': `Bearer ${user.token}` }
       });
       setProducts(res.data);

@@ -7,6 +7,8 @@ import { SlidersHorizontal, Eraser, X, Mail, Instagram, Twitter, Youtube,Package
 import { motion, AnimatePresence } from "framer-motion";
 import Loader from './Loader';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 function valuetext(value) {
   return `${value}°C`;
 }
@@ -39,7 +41,7 @@ const Index = () => {
   useEffect(() => {
     const getCategory = async () => {
       try {
-        const res = await axios.get('https://esseket.duckdns.org/api/Admin/Get-category');
+        const res = await axios.get(`${API_BASE_URL}/Admin/Get-category`);
         setCategories(res.data);
       } catch (error) {
         toast.error(error.response?.data?.message || "Error fetching categories");
@@ -53,7 +55,7 @@ const Index = () => {
     if (!parentCategoryId) return;
     const getSubCategory = async () => {
       try {
-        const res = await axios.get(`https://esseket.duckdns.org/api/Admin/Get-Subcategory/${parentCategoryId}`);
+        const res = await axios.get(`${API_BASE_URL}/Admin/Get-Subcategory/${parentCategoryId}`);
         setSubcategories(res.data);
       } catch (error) {
         toast.error(error.response?.data?.message || "Error fetching subcategories");
@@ -67,7 +69,7 @@ const Index = () => {
     const getProducts = async () => {
       
       try {
-        const res = await axios.get('https://esseket.duckdns.org/api/Admin/Get-products');
+        const res = await axios.get(`${API_BASE_URL}/Admin/Get-products`);
         setProducts(res.data);
       } catch (error) {
         toast.error("Failed to fetch products");

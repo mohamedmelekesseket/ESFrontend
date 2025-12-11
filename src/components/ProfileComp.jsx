@@ -4,6 +4,8 @@ import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { ScaleLoader } from 'react-spinners';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const ProfileComp = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -56,7 +58,7 @@ const ProfileComp = () => {
         return toast.error('Please fill in all required fields');
       }
 
-      const res = await axios.put(`https://esseket.duckdns.org/api/UpdateProfile/${user.id}`, {
+      const res = await axios.put(`${API_BASE_URL}/UpdateProfile/${user.id}`, {
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
@@ -96,7 +98,7 @@ const ProfileComp = () => {
         return toast.error('Password must be at least 6 characters long');
       }
 
-      const res = await axios.put(`https://esseket.duckdns.org/api/ChangePassword/${user.id}`, {
+      const res = await axios.put(`${API_BASE_URL}/ChangePassword/${user.id}`, {
         currentPassword: formData.currentPassword,
         newPassword: formData.newPassword
       }, {

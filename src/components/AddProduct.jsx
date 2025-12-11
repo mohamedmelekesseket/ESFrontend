@@ -3,6 +3,7 @@ import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { Plus,X } from 'lucide-react';
 import { data } from 'react-router-dom';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 const AddProduct = () => {
   const [name, setName] = useState('');
@@ -39,7 +40,7 @@ const AddProduct = () => {
   };
   const getCategory = async () => {  
     try {
-      const res = await axios.get("https://esseket.duckdns.org/api/Admin/Get-category",{
+      const res = await axios.get(`${API_BASE_URL}/Admin/Get-category`,{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -58,7 +59,7 @@ const AddProduct = () => {
 
   const getSubCategory = async (id) => {  
     try {
-      const res = await axios.get(`https://esseket.duckdns.org/api/Admin/Get-Subcategory/${id}`,{
+      const res = await axios.get(`${API_BASE_URL}/Admin/Get-Subcategory/${id}`,{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -171,7 +172,7 @@ const AddProduct = () => {
     }
     
     try {
-      const res= await axios.post('https://esseket.duckdns.org/api/Admin/Add-Product', formData, {
+      const res= await axios.post(`${API_BASE_URL}/Admin/Add-Product`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${user.token}`

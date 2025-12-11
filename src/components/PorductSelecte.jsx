@@ -6,6 +6,8 @@ import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from "framer-motion";
 import Loader from './Loader';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const ProductSelect = ({ setShowBag }) => {
   const location = useLocation();
   const { parentCategoryId, subcategoryId, genre } = location.state || {};
@@ -43,7 +45,7 @@ const fetchProducts = async () => {
   setLoading(true);
 
   try {
-    const res = await axios.get('https://esseket.duckdns.org/api/Admin/Get-products');
+    const res = await axios.get(`${API_BASE_URL}/Admin/Get-products`);
 
     const filtered = res.data.filter(
       p => p.subcategoryId === subcategoryId && p.genre === genre
@@ -186,7 +188,7 @@ const fetchProducts = async () => {
         products: [{ productId: id, quantity: 1, size: selectedSize, color: selectedColor }]
       };
 
-      const res = await axios.post('https://esseket.duckdns.org/api/AddToCart', cartData, {
+      const res = await axios.post(`${API_BASE_URL}/AddToCart`, cartData, {
         headers: {
           'Authorization': `Bearer ${user.token}`,
           'Content-Type': 'application/json'

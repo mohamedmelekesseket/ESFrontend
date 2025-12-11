@@ -4,7 +4,6 @@ import './App.css'
 import HeaderBar from './components/HeaderBar'
 import HomeComp from './components/HomeComp'
 import SeConnect from './components/SeConnect'
-import ContactPage from './components/ContactPage'
 import ManagementDashboard from './components/ManagementDashboard'
 import DashBord from './components/DashBord'
 import UserBord from './components/UserBord'
@@ -43,7 +42,6 @@ function App() {
         <Route path='/Commande' element={<CommandeComp/>}/>
         <Route path="/profile" element={<ProfileComp />} />
         <Route path='/order-confirmation' element={<FinalePage/>}/>
-        <Route path='/ContactPage' element={<ContactPage/>}/>
         <Route path="/confirm-subscribe/:token" element={<ConfirmSubscribePage/>}/>
         <Route path='/ManagementDashboard/*' element={<ManagementDashboard/>}>
           <Route index element={<Navigate to="DashBord" replace />} />

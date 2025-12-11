@@ -10,6 +10,8 @@ import mobile3 from '../images/product-32-0.png'
 import mobile4 from '../images/Chaussures/baskets-14-1.png'
 import { motion } from "framer-motion";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const Login = () => {
     const [from, setForm] = useState(true)
     const [email, setEmail] = useState('')
@@ -46,7 +48,7 @@ const Login = () => {
             return
         }
         try {
-            const res = await axios.post('https://esseket.duckdns.org/api/SignUp', {
+            const res = await axios.post(`${API_BASE_URL}/SignUp`, {
                 email,
                 phoneNumber,
                 password
@@ -86,7 +88,7 @@ const Login = () => {
             return
         }
         try {
-            const res = await axios.post('https://esseket.duckdns.org/api/SignIn', {
+            const res = await axios.post(`${API_BASE_URL}/SignIn`, {
                 email,
                 phoneNumber,
                 password

@@ -4,6 +4,8 @@ import {ShoppingBag,Truck,ChevronDown,ChevronUp  ,MoveRight, Edit2, Trash2  } fr
 import axios from 'axios'
 import toast, { Toaster } from 'react-hot-toast';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const CommandeComp = () => {
 const [value, setValue] = useState(""); // you can remove this if unused
 const [nom, setNom] = useState("");
@@ -103,7 +105,7 @@ const handleGoToProduct = (item) => {
 const DeletePrdCart = async (productToDelete) => {
   if (!user?.id) return;
   try {
-    const res = await axios.delete('https://esseket.duckdns.org/api/DeletePrdCart', {
+    const res = await axios.delete(`${API_BASE_URL}/DeletePrdCart`, {
       data: {
         userId: user.id,
         productId: productToDelete.productId._id,
@@ -132,7 +134,7 @@ const confirmDeleteItem = async () => {
 const getProductCart = async () => {  
   if (!user?.id) return;
   try {
-    const res = await axios.get(`https://esseket.duckdns.org/api/GetProductCart/${user.id}`, {
+    const res = await axios.get(`${API_BASE_URL}/GetProductCart/${user.id}`, {
       headers: {
         'Authorization': `Bearer ${user.token}`,
         'Content-Type': 'application/json'
@@ -152,7 +154,7 @@ const handleOrder = async () => {
   }  
   try {
     const res = await axios.post(
-      `https://esseket.duckdns.org/api/create-order/${user.id}`,
+      `${API_BASE_URL}/create-order/${user.id}`,
       {
         nom,
         prenom,

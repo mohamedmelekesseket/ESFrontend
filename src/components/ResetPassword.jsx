@@ -5,6 +5,8 @@ import axios from 'axios'
 import { toast, Toaster } from 'react-hot-toast'
 import EsL from '../images/Es4.png'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const ResetPasword = () => {
   const [Rest, setReset] = useState('Rest1')
   const [email, setEmail] = useState('')
@@ -40,11 +42,11 @@ const ResetPasword = () => {
   const ResetEmail = async () => {
     if (!email) return toast.error('Email Required !!')
 
-    const find = await axios.post("https://esseket.duckdns.org/api/CheckEmail", { email })
+    const find = await axios.post(`${API_BASE_URL}/CheckEmail`, { email })
     if (find.status === 204) return toast.error('Email Not exist !!')
 
     try {
-      const res = await axios.post("https://esseket.duckdns.org/api/ResetEmail", { email })
+      const res = await axios.post(`${API_BASE_URL}/ResetEmail`, { email })
       const { code } = res.data
       if (code) {
         setServerCode(code)
@@ -72,7 +74,7 @@ const ResetPasword = () => {
     if (password !== ConfPassword) return toast.error('❌ Password not matched')
 
     try {
-      const res = await axios.post(`https://esseket.duckdns.org/api/NewPassword`, { password, email })
+      const res = await axios.post(`${API_BASE_URL}/NewPassword`, { password, email })
       if (res.status === 200) {
         toast.success("✅ Password changed successfully")
         setTimeout(() => navigate("/"), 1000)

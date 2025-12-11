@@ -4,6 +4,8 @@ import toast, { Toaster } from 'react-hot-toast';
 import { Plus, X } from 'lucide-react';
 import { useParams, useNavigate } from 'react-router-dom';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const ModifyProduct = ({id,setModify}) => {
   const navigate = useNavigate();
 
@@ -45,7 +47,7 @@ const ModifyProduct = ({id,setModify}) => {
 
   const getCategory = async () => {  
     try {
-      const res = await axios.get("https://esseket.duckdns.org/api/Admin/Get-category",{
+      const res = await axios.get(`${API_BASE_URL}/Admin/Get-category`,{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -63,7 +65,7 @@ const ModifyProduct = ({id,setModify}) => {
 
   const getSubCategory = async (id) => {  
     try {
-      const res = await axios.get(`https://esseket.duckdns.org/api/Admin/Get-Subcategory/${id}`,{
+      const res = await axios.get(`${API_BASE_URL}/Admin/Get-Subcategory/${id}`,{
         headers: {
           'Authorization': `Bearer ${user.token}`
           }
@@ -257,7 +259,7 @@ const ModifyProduct = ({id,setModify}) => {
   };
   const DeleteProduct = async () => {
     try {
-      const res = await axios.delete(`https://esseket.duckdns.org/api/Admin/Delete-Product/${id}`, {
+      const res = await axios.delete(`${API_BASE_URL}/Admin/Delete-Product/${id}`, {
         headers: {
           'Authorization': `Bearer ${user.token}`
         }

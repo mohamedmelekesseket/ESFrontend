@@ -12,6 +12,8 @@ import vd from '../images/vd.mp4'
 
 import axios from 'axios'
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 const DROP_DATE = new Date('2025-12-30T00:00:00Z')
 
 const HomeComp = () => {
@@ -88,7 +90,7 @@ const sendMail = async () => {
   
   // API call
   try {
-    const res = await axios.post("https://esseket.duckdns.org/api/Contactez-nous", {
+    const res = await axios.post(`${API_BASE_URL}/Contactez-nous`, {
       name,
       subject,
       email,
@@ -111,7 +113,7 @@ const sendMail = async () => {
   }
   const getProducts = async () => {
     try {
-      const res = await axios.get("https://esseket.duckdns.org/api/GetProduct");
+      const res = await axios.get(`${API_BASE_URL}/GetProduct`);
        const featuredProducts = res.data
         .filter(p => p.isFeatured)
         .slice(0, 4);
@@ -135,7 +137,7 @@ const sendMail = async () => {
 
     setIsSubscribing(true)
     try {
-      const res = await axios.post('https://esseket.duckdns.org/api/Subscribe', {
+      const res = await axios.post(`${API_BASE_URL}/Subscribe`, {
         email,
       })
       
